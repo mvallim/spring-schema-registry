@@ -1,0 +1,44 @@
+{
+    "schema": "{
+        \"type\":\"record\",
+        \"name\":\"People\",
+        \"namespace\":\"com.sample.avro\",
+        \"doc\":\"Schema for com.sample.model.People\",
+        \"fields\":[
+            {
+                \"name\":\"id\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"name\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"height\",
+                \"type\":\"int\"
+            },{
+                \"name\":\"mass\",
+                \"type\":\"int\"
+            },{
+                \"name\":\"hair_color\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"skin_color\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"eye_color\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"birth_year\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"gender\",
+                \"type\":[\"null\",\"string\"]
+            },{
+                \"name\":\"created\",
+                \"type\":[\"null\",\"long\"]
+            },{
+                \"name\":\"edited\",
+                \"type\":[\"null\",\"long\"]
+            }
+        ]
+    }"
+}

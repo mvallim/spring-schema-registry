@@ -1,0 +1,31 @@
+spring:
+  kafka:
+    bootstrap-servers:
+    - ${spring.embedded.kafka.brokers}
+    properties:
+      auto.register.schemas: true
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+      schema.registry.url: http://localhost:8081
+    consumer:
+      properties:
+        max.poll.interval.ms: 3000
+        specific.avro.reader: true
+      group-id: people
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+      
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: changeit
+    keyStoreType: JKS
+    trust-store: classpath:truststore.jks
+    trust-store-password: changeit
+    trustStoreType: JKS

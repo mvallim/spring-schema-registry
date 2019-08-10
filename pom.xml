@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.springframework.schemaregistry</groupId>
+	<artifactId>spring-schema-registry-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>spring-schema-registry-parent</name>
+	<description>Spring Schema Registry</description>
+
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<schema.registry.version>5.2.1</schema.registry.version>
+		<spring.boot.version>2.1.2.RELEASE</spring.boot.version>
+		<avro.version>1.8.2</avro.version>
+	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.2.RELEASE</version>
+		<relativePath />
+	</parent>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-configuration-processor</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<!-- Spring Kafka -->
+			<dependency>
+				<groupId>org.springframework.kafka</groupId>
+				<artifactId>spring-kafka</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<!-- Confluent -->
+			<dependency>
+				<groupId>io.confluent</groupId>
+				<artifactId>rest-utils</artifactId>
+				<version>${schema.registry.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.confluent</groupId>
+				<artifactId>kafka-avro-serializer</artifactId>
+				<version>${schema.registry.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.confluent</groupId>
+				<artifactId>kafka-schema-registry</artifactId>
+				<version>${schema.registry.version}</version>
+			</dependency>
+
+			<!-- Test -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-library</artifactId>
+				<version>1.3</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.schemaregistry</groupId>
+				<artifactId>spring-schema-registry</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.schemaregistry</groupId>
+				<artifactId>spring-schema-registry-test</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+				<executions>
+					<execution>
+						<id>run-annotation-processors-only</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<compilerArgument>-proc:only</compilerArgument>
+						</configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>spring-schema-registry</module>
+		<module>spring-schema-registry-test</module>
+		<module>spring-schema-registry-sample</module>
+	</modules>
+
+</project>

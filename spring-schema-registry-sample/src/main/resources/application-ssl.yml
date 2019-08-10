@@ -1,0 +1,44 @@
+spring:
+  kafka:
+    bootstrap-servers:
+    - kafka-node01:9093
+    - kafka-node02:9093
+    - kafka-node03:9093
+    properties:
+      security.protocol: SSL
+      ssl.endpoint.identification.algorithm:
+      auto.register.schemas: false
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+      schema.registry.url: https://schema-registry-node01:8082, https://schema-registry-node02:8082, https://schema-registry-node03:8082
+    ssl:
+      protocol: SSL
+      key-password: changeit
+      key-store-location: classpath:application.client.keystore.jks
+      key-store-password: changeit
+      key-store-type: JKS
+      trust-store-location: classpath:application.client.truststore.jks
+      trust-store-password: changeit
+      trust-store-type: JKS
+    consumer:
+      properties:
+        max.poll.interval.ms: 3000      
+        specific.avro.reader: true
+      group-id: people
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+      
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: changeit
+    keyStoreType: JKS
+    trust-store: classpath:truststore.jks
+    trust-store-password: changeit
+    trustStoreType: JKS
