@@ -1,4 +1,4 @@
 language: java
 
 after_success:
-  - mvn jacoco:report coveralls:report
+  - mvn -pl spring-schema-registry,spring-schema-registry-test jacoco:report coveralls:report
