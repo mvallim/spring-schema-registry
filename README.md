@@ -1,5 +1,10 @@
 # Spring Schema Registry
 
+[![Build Status](https://travis-ci.org/mvallim/spring-schema-registry.svg?branch=master)](https://travis-ci.org/mvallim/spring-schema-registry)
+[![Coverage Status](https://coveralls.io/repos/github/mvallim/spring-schema-registry/badge.svg?branch=master)](https://coveralls.io/github/mvallim/spring-schema-registry?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry/badge.png)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
 The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL;
 
 ## Problem description
