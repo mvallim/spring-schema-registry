@@ -1,4 +1,4 @@
 language: java
 
 after_success:
-  - mvn jacoco:report coveralls:report
+  - mvn generate-sources jacoco:report coveralls:report

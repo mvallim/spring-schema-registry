@@ -93,3 +93,4 @@ build/
 logs/
 pom.xml.releaseBackup
 .attach_*
+release.properties
