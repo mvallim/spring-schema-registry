@@ -343,7 +343,6 @@
 	<modules>
 		<module>spring-schema-registry</module>
 		<module>spring-schema-registry-test</module>
-		<module>spring-schema-registry-sample</module>
 	</modules>
 
 </project>
