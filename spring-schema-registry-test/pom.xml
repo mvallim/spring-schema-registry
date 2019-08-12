@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>spring-schema-registry-test</artifactId>
+	
 	<packaging>jar</packaging>
 
 	<name>spring-schema-registry-test</name>
-	<description>Spring Schema Registry</description>
 
 	<parent>
-		<groupId>org.springframework.schemaregistry</groupId>
+		<groupId>com.github.mvallim</groupId>
 		<artifactId>spring-schema-registry-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -84,7 +84,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.schemaregistry</groupId>
+			<groupId>com.github.mvallim</groupId>
 			<artifactId>spring-schema-registry</artifactId>
 			<scope>test</scope>			
 		</dependency>

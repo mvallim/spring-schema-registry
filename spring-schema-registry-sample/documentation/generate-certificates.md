@@ -160,7 +160,7 @@ keytool \
     -gencert \
     -alias ca \
     -ext ku:c=dig,keyEnc \
-    -ext "san=dns:kafka-node01.,dns:kafka-node02.,dns:kafka-node03." \
+    -ext "san=dns:kafka-node01,dns:kafka-node02,dns:kafka-node03" \
     -ext eku=sa,ca \
     -rfc \
     -infile kafka-server.csr \
@@ -232,7 +232,7 @@ keytool \
     -gencert \
     -alias ca \
     -ext ku:c=dig,keyEnc \
-    -ext "san=dns:schema-registry-node01.,dns:schema-registry-node02.,dns:schema-registry-node03." \
+    -ext "san=dns:schema-registry-node01,dns:schema-registry-node02,dns:schema-registry-node03" \
     -ext eku=sa,ca \
     -rfc \
     -infile schema-registry-server.csr \

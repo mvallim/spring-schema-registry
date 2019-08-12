@@ -1,6 +1,8 @@
 language: java
-jdk:
-  - oraclejdk9
+
+after_success:
+  - mvn jacoco:report coveralls:report
+
 cache:
   directories:
   - $HOME/.m2

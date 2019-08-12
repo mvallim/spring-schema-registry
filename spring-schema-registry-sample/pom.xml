@@ -39,13 +39,13 @@
 
 		<!-- Spring Schema Registry -->
 		<dependency>
-			<groupId>org.springframework.schemaregistry</groupId>
+			<groupId>com.github.mvallim</groupId>
 			<artifactId>spring-schema-registry</artifactId>
 			<version>0.0.1-SNAPSHOT</version>			
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.schemaregistry</groupId>
+			<groupId>com.github.mvallim</groupId>
 			<artifactId>spring-schema-registry-test</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>

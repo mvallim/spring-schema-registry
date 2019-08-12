@@ -6,11 +6,12 @@
 
 	<artifactId>spring-schema-registry</artifactId>
 
+	<packaging>jar</packaging>
+
 	<name>spring-schema-registry</name>
-	<description>Spring Schema Registry</description>
 
 	<parent>
-		<groupId>org.springframework.schemaregistry</groupId>
+		<groupId>com.github.mvallim</groupId>
 		<artifactId>spring-schema-registry-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -51,7 +52,7 @@
 			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<scope>test</scope>

@@ -7,7 +7,7 @@
         -d "@people-schema.json" \
         -H "Content-Type: application/vnd.schemaregistry.v1+json" \
         -X POST \
-        https://schema-registry-node01.::8082/subjects/people-com.sample.avro.People/versions/ | jq
+        https://schema-registry-node01:8082/subjects/people-com.sample.avro.People/versions/ | jq
     ```
 
     The expected output looks like this:
@@ -22,7 +22,7 @@
 
     ```shell
     curl -s -k \
-        https://schema-registry-node01.::8082/subjects/ | jq
+        https://schema-registry-node01:8082/subjects/ | jq
     ```
 
     The expected output looks like this:
@@ -37,7 +37,7 @@
 
     ```shell
     curl -s -k \
-        https://schema-registry-node01.::8082/subjects/people-com.sample.avro.People/versions | jq
+        https://schema-registry-node01:8082/subjects/people-com.sample.avro.People/versions | jq
     ```
 
     The expected output looks like this:

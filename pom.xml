@@ -4,19 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.schemaregistry</groupId>
+	<groupId>com.github.mvallim</groupId>
 	<artifactId>spring-schema-registry-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>spring-schema-registry-parent</name>
-	<description>Spring Schema Registry</description>
-
-	<repositories>
-		<repository>
-			<id>confluent</id>
-			<url>https://packages.confluent.io/maven/</url>
-		</repository>
-	</repositories>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -26,6 +17,47 @@
 		<spring.boot.version>2.1.2.RELEASE</spring.boot.version>
 		<avro.version>1.8.2</avro.version>
 	</properties>
+	
+		<scm>
+		<url>scm:git:git@github.com:mvallim/spring-schema-registry</url>
+		<connection>scm:git:git@github.com:mvallim/spring-schema-registry</connection>
+		<developerConnection>scm:git:git@github.com:mvallim/spring-schema-registry</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<name>spring-schema-registry-parent</name>
+	<description>The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL</description>
+	<url>https://github.com/mvallim/spring-schema-registry</url>
+	<inceptionYear>2019</inceptionYear>
+
+	<organization>
+		<name>com.github.mvallim</name>
+		<url>https://github.com/mvallim</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<name>Marcos Tischer Vallim</name>
+			<email>tischer@gmail.com</email>
+			<timezone>-3</timezone>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -87,13 +119,13 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.schemaregistry</groupId>
+				<groupId>com.github.mvallim</groupId>
 				<artifactId>spring-schema-registry</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.schemaregistry</groupId>
+				<groupId>com.github.mvallim</groupId>
 				<artifactId>spring-schema-registry-test</artifactId>
 				<version>${project.version}</version>
 			</dependency>
