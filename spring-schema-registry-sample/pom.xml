@@ -41,13 +41,13 @@
 		<dependency>
 			<groupId>com.github.mvallim</groupId>
 			<artifactId>spring-schema-registry</artifactId>
-			<version>0.0.1-SNAPSHOT</version>			
+			<version>0.0.1</version>			
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.mvallim</groupId>
 			<artifactId>spring-schema-registry-test</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.kafka</groupId>
