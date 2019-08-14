@@ -7,10 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer;
 
 @Configuration
-public class SenderConfig extends WrapperKafkaAvroSerializer {
+public class SenderConfig {
 
 	@Bean
 	public ProducerFactory<?, ?> producerFactory(final KafkaProperties kafkaProperties) {

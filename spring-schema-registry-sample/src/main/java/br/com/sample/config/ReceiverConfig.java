@@ -10,11 +10,10 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer;
 
 @EnableKafka
 @Configuration
-public class ReceiverConfig extends WrapperKafkaAvroDeserializer {
+public class ReceiverConfig {
 
 	@Bean
 	public ConsumerFactory<?, ?> consumerFactory(final KafkaProperties kafkaProperties) {

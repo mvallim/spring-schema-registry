@@ -328,6 +328,7 @@
 	<modules>
 		<module>spring-schema-registry</module>
 		<module>spring-schema-registry-test</module>
+		<module>spring-schema-registry-embedded</module>
 	</modules>
 
 </project>
