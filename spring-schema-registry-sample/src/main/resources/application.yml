@@ -1,7 +1,7 @@
 spring:
   kafka:
     bootstrap-servers:
-    - ${spring.embedded.kafka.brokers}
+    - localhost:9092
     properties:
       auto.register.schemas: true
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy

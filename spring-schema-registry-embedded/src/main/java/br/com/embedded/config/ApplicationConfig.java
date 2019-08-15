@@ -16,25 +16,22 @@ class ApplicationConfig implements BeanFactoryPostProcessor, DisposableBean {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
 	private EmbeddedKafkaBroker embeddedKafkaBroker;
+	
 	private EmbeddedSchemaRegistryServer embeddedSchemaRegistryServer;
+	
+	private static final Integer DEFAULT_KAFKA_PORT = 9092;
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) {
 		try {
-			this.embeddedKafkaBroker = new EmbeddedKafkaBroker(1, true, 2);
+			this.embeddedKafkaBroker = new EmbeddedKafkaBroker(1, true, 10);
+			this.embeddedKafkaBroker.kafkaPorts(DEFAULT_KAFKA_PORT);
 			this.embeddedKafkaBroker.afterPropertiesSet();
-
-			final String kafkaBootstrapServers = this.embeddedKafkaBroker.getBrokersAsString();
-			System.setProperty("spring.embedded.kafka.brokers", kafkaBootstrapServers);
-
 			this.embeddedSchemaRegistryServer = new EmbeddedSchemaRegistryServer(this.embeddedKafkaBroker.getZookeeperConnectionString());
-
 			this.embeddedSchemaRegistryServer.afterPropertiesSet();
-			
-			LOGGER.info("Listen Kafka Server on : {}", kafkaBootstrapServers);
+			LOGGER.info("Listen Kafka Server on : {}", this.embeddedKafkaBroker.getBrokersAsString());
 			LOGGER.info("Listen Schema Registry on : http://localhost:8081");
 		} catch (final Exception e) {
-			LOGGER.error("Error creating Embedded Schema Registry Server", e);
 			throw new BeanInitializationException("Error creating Embedded Schema Registry Server", e);
 		}
 	}
