@@ -10,4 +10,4 @@
 * [Spring Schema Registry](spring-schema-registry/README.md)
 * [Spring Schema Registry Test](spring-schema-registry-test/README.md)
 * [Kafka + Schema Registry Embedded](spring-schema-registry-embedded/README.md)
-* [Spring Schema Registry Sample](spring-schema-registry-test/README.md)
+* [Sample Application Demo](spring-schema-registry-sample/README.md)
