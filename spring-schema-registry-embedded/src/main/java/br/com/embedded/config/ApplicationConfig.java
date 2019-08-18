@@ -22,7 +22,7 @@ class ApplicationConfig implements BeanFactoryPostProcessor, DisposableBean {
 	private static final Integer DEFAULT_KAFKA_PORT = 9092;
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) {
+	public void postProcessBeanFactory(final ConfigurableListableBeanFactory configurableListableBeanFactory) {
 		try {
 			this.embeddedKafkaBroker = new EmbeddedKafkaBroker(1, true, 10);
 			this.embeddedKafkaBroker.kafkaPorts(DEFAULT_KAFKA_PORT);
