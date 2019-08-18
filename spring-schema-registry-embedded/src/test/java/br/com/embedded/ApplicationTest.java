@@ -4,11 +4,11 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import br.com.embedded.config.ApplicationConfig;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
+import org.springframework.schemaregistry.EmbeddedSchemaRegistryServer;
 
 public class ApplicationTest {
 
@@ -17,15 +17,18 @@ public class ApplicationTest {
 		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class);
 		
 		final Application application = applicationContext.getBean(Application.class);
-		final ApplicationConfig applicationConfig = applicationContext.getBean(ApplicationConfig.class);
+		final EmbeddedKafkaBroker broker = applicationContext.getBean(EmbeddedKafkaBroker.class);
+		final EmbeddedSchemaRegistryServer schemaRegistry = applicationContext.getBean(EmbeddedSchemaRegistryServer.class);
 		
 		assertThat(application, notNullValue());
-		assertThat(applicationConfig, notNullValue());
+		assertThat(broker, notNullValue());
+		assertThat(schemaRegistry, notNullValue());
 		
-		applicationConfig.destroy();
+		schemaRegistry.destroy();
+		broker.destroy();
 	}
 	
-	@Test(expected = BeanInitializationException.class)
+	@Test(expected = BeanCreationException.class)
 	public void testUpFail() {
 		SpringApplication.run(Application.class);
 		SpringApplication.run(Application.class);
