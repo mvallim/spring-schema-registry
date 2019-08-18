@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 
 import br.com.sample.test.model.People;
 
-@Mapper(uses = ChaSequenceTransform.class)
+@Mapper
 public interface PeopleMapper {
 
 	PeopleMapper MAPPER = Mappers.getMapper(PeopleMapper.class);

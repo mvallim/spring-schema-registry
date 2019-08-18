@@ -86,6 +86,9 @@
 							<stringType>String</stringType>
 							<testSourceDirectory>${project.basedir}/src/test/resources/avro/</testSourceDirectory>
 							<testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
+							<includes>
+								<include>**/*.avsc</include>
+							</includes>
 						</configuration>
 					</execution>
 				</executions>
