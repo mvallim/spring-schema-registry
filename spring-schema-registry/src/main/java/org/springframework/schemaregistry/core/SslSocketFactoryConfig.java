@@ -2,6 +2,7 @@ package org.springframework.schemaregistry.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import io.confluent.rest.RestConfig;
 
-class SslSocketFactoryConfig extends HashMap<String, Object> {
+public class SslSocketFactoryConfig extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = 3822429823527345551L;
 
@@ -122,13 +123,13 @@ class SslSocketFactoryConfig extends HashMap<String, Object> {
 		this.put(RestConfig.SSL_PROTOCOL_CONFIG, protocol);
 	}
 
-	public String getProvider() {
+	public Provider getProvider() {
 		return Optional.ofNullable(this.get(RestConfig.SSL_PROVIDER_CONFIG)).isPresent()
-				? this.get(RestConfig.SSL_PROVIDER_CONFIG).toString()
+				? Provider.class.cast(this.get(RestConfig.SSL_PROVIDER_CONFIG))
 				: null;
 	}
 
-	public void setProvider(String provider) {
+	public void setProvider(Provider provider) {
 		this.put(RestConfig.SSL_PROVIDER_CONFIG, provider);
 	}
 
