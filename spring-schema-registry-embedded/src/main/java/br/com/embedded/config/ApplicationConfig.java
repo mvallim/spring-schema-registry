@@ -11,7 +11,7 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.schemaregistry.EmbeddedSchemaRegistryServer;
 
 @Configuration
-class ApplicationConfig implements BeanFactoryPostProcessor, DisposableBean {
+public class ApplicationConfig implements BeanFactoryPostProcessor, DisposableBean {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
