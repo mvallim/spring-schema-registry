@@ -94,3 +94,4 @@ logs/
 pom.xml.releaseBackup
 .attach_*
 release.properties
+example/avro/*

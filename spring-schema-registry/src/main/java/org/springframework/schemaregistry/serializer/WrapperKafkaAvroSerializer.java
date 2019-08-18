@@ -1,6 +1,5 @@
 package org.springframework.schemaregistry.serializer;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -17,24 +16,42 @@ import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
 public class WrapperKafkaAvroSerializer implements Serializer<Object> {
 
+	AbstractKafkaAvroSerDeConfig serializerConfig;
+	
+	SchemaRegistryClient schemaRegistry;
+
 	KafkaAvroSerializer serializer;
+
+	public WrapperKafkaAvroSerializer() {
+
+	}
+
+	public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistry) {
+		this.schemaRegistry = schemaRegistry;
+		this.serializer = new KafkaAvroSerializer(this.schemaRegistry);
+	}
+
+	public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistry, final Map<String, ?> configs) {
+		this.schemaRegistry = schemaRegistry;
+		this.serializerConfig = new KafkaAvroSerializerConfig(configs);
+		this.serializer = new KafkaAvroSerializer(this.schemaRegistry, this.serializerConfig.originalsWithPrefix(""));
+	}
 
 	@Override
 	public void configure(final Map<String, ?> configs, final boolean isKey) {
-		final KafkaAvroSerializerConfig serializerConfig = new KafkaAvroSerializerConfig(configs);
-		final List<String> urls = serializerConfig.getList(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG);
-
-		final RestService restService = new RestService(urls);
+		this.serializerConfig = new KafkaAvroSerializerConfig(configs);
+		
+		final RestService restService = new RestService(serializerConfig.getSchemaRegistryUrls());
 
 		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(configs);
 
 		if (sslSocketFactory != null) {
 			restService.setSslSocketFactory(sslSocketFactory);
 		}
+		
+		this.schemaRegistry = new CachedSchemaRegistryClient(restService, serializerConfig.getMaxSchemasPerSubject(), configs);
 
-		final SchemaRegistryClient client = new CachedSchemaRegistryClient(restService, 100, configs);
-
-		this.serializer = new KafkaAvroSerializer(client, configs);
+		this.serializer = new KafkaAvroSerializer(this.schemaRegistry, this.serializerConfig.originalsWithPrefix(""));
 
 		this.serializer.configure(configs, isKey);
 	}

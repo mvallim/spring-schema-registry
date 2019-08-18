@@ -5,6 +5,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
 import org.junit.Before;
@@ -15,7 +18,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 	private final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
 
 	@Before
-	public void SetUp() {
+	public void SetUp() throws NoSuchAlgorithmException {
 		this.properties.setProtocol("SSL");
 		this.properties.setKeyPassword("changeit");
 		this.properties.setKeyStoreLocation("classpath:keystore-test.jks");
@@ -26,10 +29,33 @@ public class SchemaRegistrySSLSocketFactoryTest {
 		this.properties.setTrustStorePassword("changeit");
 		this.properties.setTrustManagerAlgorithm("SunX509");
 		this.properties.setTrustStoreType("JKS");
+		this.properties.setProvider(SSLContext.getDefault().getProvider());
 	}
 
 	@Test
 	public void whenMinimalValidConfigurationGetSslSocketFactorySuccess() {
+
+		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
+				.createSslSocketFactory(this.properties);
+
+		assertThat(sslSocketFactory, is(notNullValue()));
+	}
+
+	@Test
+	public void whenInvalidSSLConfigurationGetSslSocketFactoryFail() {
+
+		this.properties.setProtocol(null);
+
+		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
+				.createSslSocketFactory(this.properties);
+
+		assertThat(sslSocketFactory, is(nullValue()));
+	}
+
+	@Test
+	public void whenInvalidProviderConfigurationGetSslSocketFactorySuccess() {
+
+		this.properties.setProvider(null);
 
 		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
 				.createSslSocketFactory(this.properties);
@@ -46,6 +72,17 @@ public class SchemaRegistrySSLSocketFactoryTest {
 				.createSslSocketFactory(this.properties);
 
 		assertThat(sslSocketFactory, is(nullValue()));
+	}
+
+	@Test
+	public void whenInvalidKeyPassworIsNullConfigurationGetSslSocketFactorySuccess() {
+
+		this.properties.setKeyPassword(null);
+
+		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
+				.createSslSocketFactory(this.properties);
+
+		assertThat(sslSocketFactory, is(notNullValue()));
 	}
 
 	@Test
