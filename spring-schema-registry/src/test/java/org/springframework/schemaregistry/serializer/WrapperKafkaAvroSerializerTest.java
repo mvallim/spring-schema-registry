@@ -136,6 +136,7 @@ public class WrapperKafkaAvroSerializerTest {
 
 		try(final Serializer<Object> serializer = new WrapperKafkaAvroSerializer()) {
 			serializer.configure(properties, false);
+			assertEquals(null, serializer.serialize(TOPIC, null));
 		}
 	}
 
@@ -147,6 +148,7 @@ public class WrapperKafkaAvroSerializerTest {
 
 		try(final Serializer<Object> serializer = new WrapperKafkaAvroSerializer()) {
 			serializer.configure(properties, false);
+			assertEquals(null, serializer.serialize(TOPIC, null));
 		}
 	}
 
@@ -221,6 +223,7 @@ public class WrapperKafkaAvroSerializerTest {
 		props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
 		props.put(AbstractKafkaAvroSerDeConfig.MAX_SCHEMAS_PER_SUBJECT_CONFIG, "5");
 		serializer.configure(props, false);
+		assertEquals(null, serializer.serialize(TOPIC, null));
 	}
 
 	private IndexedRecord createAvroRecord() throws IOException {
