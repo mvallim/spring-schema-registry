@@ -1,6 +1,7 @@
 package org.springframework.schemaregistry.serializer;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -19,40 +20,43 @@ public class WrapperKafkaAvroDeserializer implements Deserializer<Object> {
 
 	AbstractKafkaAvroSerDeConfig deserializerConfig;
 	
-	SchemaRegistryClient schemaRegistry;
+	SchemaRegistryClient schemaRegistryClient;
 	
 	KafkaAvroDeserializer deserializer;
 
 	public WrapperKafkaAvroDeserializer() {
-
+		this.deserializer = new KafkaAvroDeserializer();
 	}
 
-	public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistry) {
-		this.schemaRegistry = schemaRegistry;
-		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistry);
+	public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient) {
+		this.schemaRegistryClient = schemaRegistryClient;
+		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistryClient);
 	}
 
-	public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistry, final Map<String, ?> configs) {
-		this.schemaRegistry = schemaRegistry;
+	public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
+		this.schemaRegistryClient = schemaRegistryClient;
 		this.deserializerConfig = new KafkaAvroSerializerConfig(configs);
-		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistry, this.deserializerConfig.originalsWithPrefix(""));
+		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistryClient, this.deserializerConfig.originalsWithPrefix(""));
 	}
 	
 	@Override
 	public void configure(final Map<String, ?> configs, final boolean isKey) {
-		this.deserializerConfig = new KafkaAvroDeserializerConfig(configs);
 		
-		final RestService restService = new RestService(deserializerConfig.getSchemaRegistryUrls());
-
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(configs);
-
-		if (sslSocketFactory != null) {
-			restService.setSslSocketFactory(sslSocketFactory);
+		if (!Optional.ofNullable(this.schemaRegistryClient).isPresent()) {
+			this.deserializerConfig = new KafkaAvroDeserializerConfig(configs);
+			
+			final RestService restService = new RestService(deserializerConfig.getSchemaRegistryUrls());
+	
+			final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(configs);
+	
+			if (sslSocketFactory != null) {
+				restService.setSslSocketFactory(sslSocketFactory);
+			}
+	
+			this.schemaRegistryClient = new CachedSchemaRegistryClient(restService, deserializerConfig.getMaxSchemasPerSubject(), this.deserializerConfig.originalsWithPrefix(""));
 		}
-
-		this.schemaRegistry = new CachedSchemaRegistryClient(restService, deserializerConfig.getMaxSchemasPerSubject(), configs);
-
-		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistry, this.deserializerConfig.originalsWithPrefix(""));
+		
+		this.deserializer = new KafkaAvroDeserializer(this.schemaRegistryClient, configs);
 
 		this.deserializer.configure(configs, isKey);
 	}
@@ -64,9 +68,7 @@ public class WrapperKafkaAvroDeserializer implements Deserializer<Object> {
 
 	@Override
 	public void close() {
-		if (this.deserializer != null) {
-			this.deserializer.close();
-		}
+		this.deserializer.close();
 	}
 
 }

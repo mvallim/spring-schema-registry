@@ -11,7 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import io.confluent.rest.RestConfig;
 
-class SslSocketFactoryConfig extends HashMap<String, Object> {
+public class SslSocketFactoryConfig extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = 3822429823527345551L;
 
