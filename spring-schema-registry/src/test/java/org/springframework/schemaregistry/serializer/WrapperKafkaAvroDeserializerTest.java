@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
 
+import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
@@ -51,6 +52,7 @@ public class WrapperKafkaAvroDeserializerTest {
 
 		try(final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer()) {
 			deserializer.configure(properties, false);
+			assertEquals(null, deserializer.deserialize("test", null));
 		}
 	}
 
@@ -62,6 +64,18 @@ public class WrapperKafkaAvroDeserializerTest {
 
 		try(final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer()) {
 			deserializer.configure(properties, false);
+			assertEquals(null, deserializer.deserialize("test", null));
+		}
+	}
+	
+	@Test
+	public void testConfigure() {
+		try(final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer(new MockSchemaRegistryClient())) {
+			final Map<String, Object> props = new HashMap<>();
+			props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
+			props.put(KafkaAvroSerializerConfig.AUTO_REGISTER_SCHEMAS, false);
+			deserializer.configure(props, false);
+			assertEquals(null, deserializer.deserialize("test", null));
 		}
 	}
 
