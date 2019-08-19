@@ -8,7 +8,7 @@
 
 ## Index
 
-* [Spring Schema Registry](spring-schema-registry/README.md)
-* [Spring Schema Registry Test](spring-schema-registry-test/README.md)
-* [Kafka + Schema Registry Embedded](spring-schema-registry-embedded/README.md)
-* [Sample Application Demo](spring-schema-registry-sample/README.md)
+* [Spring Schema Registry](spring-schema-registry/README.md) How to use?
+* [Spring Schema Registry Test](spring-schema-registry-test/README.md) How to use?
+* [Kafka + Schema Registry Embedded](spring-schema-registry-embedded/README.md) How to use?
+* [Sample Application Demo](spring-schema-registry-sample/README.md) Running!
