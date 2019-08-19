@@ -15,7 +15,7 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
        -DremoteRepositories=http://repo1.maven.org/maven2/ \
        -DgroupId=com.github.mvallim \
        -DartifactId=spring-schema-registry-embedded \
-       -Dversion=0.0.2 \
+       -Dversion=0.0.3 \
        -Dtransitive=false
    ```
 
@@ -24,7 +24,7 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
 1. Run embedded Kafka + Schema Registry
 
    ```shell
-   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.2/spring-schema-registry-embedded-0.0.2.jar
+   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.3/spring-schema-registry-embedded-0.0.3.jar
    ```
 
    Output should be
@@ -40,13 +40,14 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
 
     2019-08-18 19:19:23,098  INFO [main] ApplicationConfig.embeddedKafkaBroker(21) | Listen Kafka Server on : 127.0.0.1:9092
     2019-08-18 19:19:23,729  INFO [main] ApplicationConfig.embeddedSchemaRegistryServer(28) | Listen Schema Registry on : http://localhost:8081
-    [2019-08-18 19:19:24.510] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.ConfigResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.ConfigResource will be ignored. 
-    [2019-08-18 19:19:24.511] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.ModeResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.ModeResource will be ignored. 
-    [2019-08-18 19:19:24.511] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SubjectsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SubjectsResource will be ignored. 
-    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SubjectVersionsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SubjectVersionsResource will be ignored. 
-    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.CompatibilityResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.CompatibilityResource will be ignored. 
-    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource will be ignored. 
+    [2019-08-18 19:19:24.510] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.ConfigResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.ConfigResource will be ignored.
+    [2019-08-18 19:19:24.511] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.ModeResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.ModeResource will be ignored.
+    [2019-08-18 19:19:24.511] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SubjectsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SubjectsResource will be ignored.
+    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SubjectVersionsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SubjectVersionsResource will be ignored.
+    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.CompatibilityResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.CompatibilityResource will be ignored.
+    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource will be ignored.
    ```
+
 ## 2. Start Sample Application
 
 ### 2.1 Run
@@ -122,7 +123,6 @@ The expected output application looks like this:
 19:19:32.817 [main] INFO  b.c.s.Application - Started Application in 1.957 seconds (JVM running for 2.27)
 19:19:55.350 [kafka-producer-network-thread | producer-1] INFO  o.a.k.c.Metadata - Cluster ID: QBmbxShaQ0uCWYdpb3C1vw
 19:19:55.663 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  b.c.s.a.PeopleApplication - received payload='{"id": "cca01a66-3fd7-4606-995b-f6d1986ca930", "name": "Marcos Vallim", "height": 186, "mass": 80, "hair_color": "white", "skin_color": "white", "eye_color": "brow", "birth_year": "1980", "gender": "male", "created": 1566166795263, "edited": 1566166795263}'
-
 ```
 
 ## Useful information
