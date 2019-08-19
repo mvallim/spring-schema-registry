@@ -169,7 +169,7 @@ public class ProducerConfig {
 ```java
 @EnableKafka
 @Configuration
-public class ReceiverConfig {
+public class ConsumerConfig {
 
     @Bean
     public ConsumerFactory<?, ?> consumerFactory(final KafkaProperties kafkaProperties) {
