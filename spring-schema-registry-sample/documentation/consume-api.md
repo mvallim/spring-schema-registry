@@ -67,5 +67,4 @@
     19:19:32.817 [main] INFO  b.c.s.Application - Started Application in 1.957 seconds (JVM running for 2.27)
     19:19:55.350 [kafka-producer-network-thread | producer-1] INFO  o.a.k.c.Metadata - Cluster ID: QBmbxShaQ0uCWYdpb3C1vw
     19:19:55.663 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  b.c.s.a.PeopleApplication - received payload='{"id": "cca01a66-3fd7-4606-995b-f6d1986ca930", "name": "Marcos Vallim", "height": 186, "mass": 80, "hair_color": "white", "skin_color": "white", "eye_color": "brow", "birth_year": "1980", "gender": "male", "created": 1566166795263, "edited": 1566166795263}'
-
     ```
