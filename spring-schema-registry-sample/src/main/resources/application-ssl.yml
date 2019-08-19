@@ -6,7 +6,6 @@ spring:
     - kafka-node03:9093
     properties:
       security.protocol: SSL
-      ssl.endpoint.identification.algorithm:
       auto.register.schemas: false
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
       schema.registry.url: https://schema-registry-node01:8082, https://schema-registry-node02:8082, https://schema-registry-node03:8082
