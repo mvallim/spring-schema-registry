@@ -6,7 +6,7 @@ spring:
       auto.register.schemas: true
       specific.avro.reader: true
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
-      schema.registry.url: http://localhost:8081
+      schema.registry.url: ${spring.embedded.schema.registry}
     consumer:
       group-id: people
       auto-offset-reset: earliest

@@ -6,25 +6,26 @@ import org.springframework.schemaregistry.EmbeddedSchemaRegistryServer;
 
 public class EmbeddedSchemaRegistryRule extends ExternalResource implements TestRule {
 
-	private static final Integer DEFAULT_SCHEMA_REGISTRY_PORT = 8081;
-	private static final String DEFAULT_KAFKA_CONNECTION_URL = "localhost:2181";
-
-	private final EmbeddedSchemaRegistryServer embeddedSchemaRegistryServer;
+	final EmbeddedSchemaRegistryServer embeddedSchemaRegistryServer;
 
 	public EmbeddedSchemaRegistryRule() {
-		this(DEFAULT_SCHEMA_REGISTRY_PORT, DEFAULT_KAFKA_CONNECTION_URL);
+		this(null, null);
 	}
 
 	public EmbeddedSchemaRegistryRule(Integer port) {
-		this(port, DEFAULT_KAFKA_CONNECTION_URL);
+		this(port, null);
 	}
 
 	public EmbeddedSchemaRegistryRule(String kafkaConnectionUrl) {
-		this(DEFAULT_SCHEMA_REGISTRY_PORT, kafkaConnectionUrl);
+		this(null, kafkaConnectionUrl);
 	}
 
 	public EmbeddedSchemaRegistryRule(Integer port, String kafkaConnectionUrl) {
 		this.embeddedSchemaRegistryServer = new EmbeddedSchemaRegistryServer(port, kafkaConnectionUrl);
+	}
+
+	public Integer getPort() {
+		return this.embeddedSchemaRegistryServer.getPort();
 	}
 
 	@Override

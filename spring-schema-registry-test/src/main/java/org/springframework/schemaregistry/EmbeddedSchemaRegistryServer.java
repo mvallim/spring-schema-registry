@@ -1,15 +1,17 @@
 package org.springframework.schemaregistry;
 
-import java.util.Properties;
-
+import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
+import io.confluent.kafka.schemaregistry.rest.SchemaRegistryRestApplication;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.SocketUtils;
 
-import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
-import io.confluent.kafka.schemaregistry.rest.SchemaRegistryRestApplication;
+import java.util.Properties;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class EmbeddedSchemaRegistryServer implements InitializingBean, DisposableBean {
 
@@ -25,7 +27,7 @@ public class EmbeddedSchemaRegistryServer implements InitializingBean, Disposabl
 	private final String kafkaConnectionUrl;
 
 	public EmbeddedSchemaRegistryServer() {
-		this(DEFAULT_SCHEMA_REGISTRY_PORT, DEFAULT_KAFKA_CONNECTION_URL);
+		this(null, DEFAULT_KAFKA_CONNECTION_URL);
 	}
 
 	public EmbeddedSchemaRegistryServer(Integer port) {
@@ -33,12 +35,12 @@ public class EmbeddedSchemaRegistryServer implements InitializingBean, Disposabl
 	}
 
 	public EmbeddedSchemaRegistryServer(String kafkaConnectionUrl) {
-		this(DEFAULT_SCHEMA_REGISTRY_PORT, kafkaConnectionUrl);
+		this(null, kafkaConnectionUrl);
 	}
 
 	public EmbeddedSchemaRegistryServer(Integer port, String kafkaConnectionUrl) {
-		this.port = port;
-		this.kafkaConnectionUrl = kafkaConnectionUrl;
+		this.port = port == null ? SocketUtils.findAvailableTcpPort() : port;
+		this.kafkaConnectionUrl = isBlank(kafkaConnectionUrl) ? DEFAULT_KAFKA_CONNECTION_URL : kafkaConnectionUrl;
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class EmbeddedSchemaRegistryServer implements InitializingBean, Disposabl
 		final SchemaRegistryConfig config = new SchemaRegistryConfig(props);
 		final SchemaRegistryRestApplication app = new SchemaRegistryRestApplication(config);
 
-		this.server = app.createServer();
+		this.server =  app.createServer();
 		this.server.start();
 
 		LOGGER.info("Server started, listening for requests...");
@@ -59,9 +61,26 @@ public class EmbeddedSchemaRegistryServer implements InitializingBean, Disposabl
 	@Override
 	public void destroy() {
 		try {
-			this.server.stop();
+			stopServer();
 		} catch (final Exception e) {
 			LOGGER.error("Error shutdown embedded schema registry...", e);
+			throw new RuntimeException("Error shutdown embedded schema registry...", e);
 		}
+	}
+
+	void stopServer() throws Exception {
+		this.server.stop();
+	}
+
+	public Server getServer() {
+		return server;
+	}
+
+	public Integer getPort() {
+		return port;
+	}
+
+	public String getKafkaConnectionUrl() {
+		return kafkaConnectionUrl;
 	}
 }
