@@ -23,7 +23,7 @@ public class EmbeddedSchemaRegistryServerTest {
         this.embeddedSchemaRegistryServer = new EmbeddedSchemaRegistryServer();
 
         // THEN
-        assertThat(this.embeddedSchemaRegistryServer.getPort()).isEqualTo(8081);
+        assertThat(this.embeddedSchemaRegistryServer.getPort()).isPositive();
         assertThat(this.embeddedSchemaRegistryServer.getKafkaConnectionUrl())
                 .isEqualTo("localhost:2181");
         assertThat(this.embeddedSchemaRegistryServer.getServer()).isNull();
@@ -47,7 +47,7 @@ public class EmbeddedSchemaRegistryServerTest {
         this.embeddedSchemaRegistryServer = new EmbeddedSchemaRegistryServer("localhost:2989");
 
         // THEN
-        assertThat(this.embeddedSchemaRegistryServer.getPort()).isEqualTo(8081);
+        assertThat(this.embeddedSchemaRegistryServer.getPort()).isPositive();
         assertThat(this.embeddedSchemaRegistryServer.getKafkaConnectionUrl())
                 .isEqualTo("localhost:2989");
         assertThat(this.embeddedSchemaRegistryServer.getServer()).isNull();

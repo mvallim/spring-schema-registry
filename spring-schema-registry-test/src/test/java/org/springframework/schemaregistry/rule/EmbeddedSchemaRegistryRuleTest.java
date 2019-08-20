@@ -17,7 +17,7 @@ public class EmbeddedSchemaRegistryRuleTest {
         this.embeddedSchemaRegistryRule = new EmbeddedSchemaRegistryRule();
 
         // THEN
-        assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getPort()).isEqualTo(8081);
+        assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getPort()).isPositive();
         assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getKafkaConnectionUrl())
                 .isEqualTo("localhost:2181");
         assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getServer()).isNull();
@@ -41,7 +41,7 @@ public class EmbeddedSchemaRegistryRuleTest {
         this.embeddedSchemaRegistryRule = new EmbeddedSchemaRegistryRule("localhost:2989");
 
         // THEN
-        assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getPort()).isEqualTo(8081);
+        assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getPort()).isPositive();
         assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getKafkaConnectionUrl())
                 .isEqualTo("localhost:2989");
         assertThat(this.embeddedSchemaRegistryRule.embeddedSchemaRegistryServer.getServer()).isNull();
