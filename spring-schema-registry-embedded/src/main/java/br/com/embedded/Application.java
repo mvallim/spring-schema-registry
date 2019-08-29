@@ -1,5 +1,6 @@
 package br.com.embedded;
 
+import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -17,11 +18,12 @@ public class Application {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	
 	public static void main(final String[] args) {
-		run(args);
-		SpringApplication.run(Application.class, args);
+		if (accept(args)) {
+			SpringApplication.run(Application.class, args);
+		}
 	}
 
-	public static void run(final String[] args) {
+	public static boolean accept(final String[] args) {
 		
 		final Options options = new Options();
 		
@@ -48,17 +50,29 @@ public class Application {
         topics.setArgs(1);
         topics.setRequired(false);
         options.addOption(topics);
-      
+
+        final Option help = new Option("h", "help", true, "print this help");
+        help.setType(String.class);
+        help.setArgs(0);
+        help.setRequired(false);
+        options.addOption(help);
+
+    	final HelpFormatter formatter = new HelpFormatter();
+
         try {
         	final CommandLineParser parser = new DefaultParser();
-        	parser.parse(options, args);
+        	final CommandLine cmd = parser.parse(options, args);        	
+        	if (cmd.hasOption('h')) {
+                formatter.printHelp("spring-schema-registry-embedded", options);
+                return false;
+        	}
         } catch (final ParseException e) {
         	LOGGER.error(e.getMessage());
-            final HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("spring-schema-registry-embedded", options);
-            System.exit(1);
+            return false;
         }
-		
+        
+        return true;
 	}
 
 }

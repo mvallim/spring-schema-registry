@@ -21,21 +21,28 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
 
 ### 1.2 Command Line Parameters
 
+1. Help
+
+   ```shell
+   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar --help
+   ```
+
    ```text
    usage: spring-schema-registry-embedded
     -b,--brokers <arg>            the number of brokers
     -p,--topic-partitions <arg>   the number of partitions per topic
     -P,--broker-port <arg>        the number of port broker
     -t,--topics <arg>             the topics to create
+    -h,--help                     print this help
    ```
 
-1. Without parameters
+2. Without parameters
 
    ```shell
    java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar
    ```
 
-2. With parameters
+3. With parameters
 
    ```shell
    java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar --brokers=10 --topic-partitions=20 --broker-port=9092 --topics=test1,test2,test3
