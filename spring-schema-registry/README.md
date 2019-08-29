@@ -46,7 +46,7 @@ This chapter will show you how to use Kafka + Schema Registry over SSL.
 <dependency>
     <groupId>com.github.mvallim</groupId>
     <artifactId>spring-schema-registry</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 

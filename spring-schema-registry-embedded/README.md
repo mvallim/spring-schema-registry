@@ -15,16 +15,38 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
        -DremoteRepositories=http://repo1.maven.org/maven2/ \
        -DgroupId=com.github.mvallim \
        -DartifactId=spring-schema-registry-embedded \
-       -Dversion=0.0.3 \
+       -Dversion=0.0.4 \
        -Dtransitive=false
    ```
 
-### 1.2 Run
+### 1.2 Command Line Parameters
+
+   ```text
+   usage: spring-schema-registry-embedded
+    -b,--brokers <arg>            the number of brokers
+    -p,--topic-partitions <arg>   the number of partitions per topic
+    -P,--broker-port <arg>        the number of port broker
+    -t,--topics <arg>             the topics to create
+   ```
+
+1. Without parameters
+
+   ```shell
+   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar
+   ```
+
+2. With parameters
+
+   ```shell
+   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar --brokers=10 --topic-partitions=20 --broker-port=9092 --topics=test1,test2,test3
+   ```
+
+### 1.3 Run
 
 1. Run embedded Kafka + Schema Registry
 
    ```shell
-   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.3/spring-schema-registry-embedded-0.0.3.jar
+   java -jar ~/.m2/repository/com/github/mvallim/spring-schema-registry-embedded/0.0.4/spring-schema-registry-embedded-0.0.4.jar
    ```
 
    Output should be
@@ -48,7 +70,7 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
    [2019-08-18 19:19:24.512] - 25942 WARNING [main] --- org.glassfish.jersey.internal.inject.Providers: A provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider io.confluent.kafka.schemaregistry.rest.resources.SchemasResource will be ignored.
    ```
 
-### 1.3 Check ports
+### 1.4 Check ports
 
 1. Check the application ports
 
