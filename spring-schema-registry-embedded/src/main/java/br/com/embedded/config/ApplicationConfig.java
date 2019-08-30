@@ -2,6 +2,7 @@ package br.com.embedded.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
@@ -12,12 +13,30 @@ class ApplicationConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
-	private static final Integer DEFAULT_KAFKA_PORT = 9092;
+	@Value("${brokers:1}")
+	private Integer brokers;
+	
+	@Value("${broker-port:9092}")
+	private Integer brokersPort;
+
+	@Value("${topic-partitions:20}")
+	private Integer partitions;
+
+	@Value("${topics:null}")
+	private String[] topics;
 
 	@Bean
 	public EmbeddedKafkaBroker embeddedKafkaBroker() {
-		final EmbeddedKafkaBroker broker = new EmbeddedKafkaBroker(1, true, 10);
-		broker.kafkaPorts(DEFAULT_KAFKA_PORT);
+		final EmbeddedKafkaBroker broker = new EmbeddedKafkaBroker(brokers, true, partitions, topics);
+		
+		final int[] ports = new int[brokers];
+		
+		for(int i = 0; i < brokers; i++) {
+			ports[i] = brokersPort + i;
+		}
+		
+		broker.kafkaPorts(ports);
+		
 		LOGGER.info("Listen Kafka Server on : {}", broker.getBrokersAsString());
 		return broker;
 	}
