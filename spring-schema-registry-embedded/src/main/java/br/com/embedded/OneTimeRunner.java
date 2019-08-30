@@ -34,11 +34,17 @@ class OneTimeRunner implements CommandLineRunner {
 		partitions.setRequired(false);
 		options.addOption(partitions);
 
-		final Option brokersPort = new Option(null, "broker-port", true, "the number of port broker");
-		brokersPort.setType(Integer.class);
-		brokersPort.setArgs(1);
-		brokersPort.setRequired(false);
-		options.addOption(brokersPort);
+		final Option brokerPort = new Option(null, "broker-port", true, "the number of port broker");
+		brokerPort.setType(Integer.class);
+		brokerPort.setArgs(1);
+		brokerPort.setRequired(false);
+		options.addOption(brokerPort);
+
+		final Option schemaRegistryPort = new Option(null, "schema-registry-port", true, "the number of port schema registry");
+		schemaRegistryPort.setType(Integer.class);
+		schemaRegistryPort.setArgs(1);
+		schemaRegistryPort.setRequired(false);
+		options.addOption(schemaRegistryPort);
 
 		final Option brokers = new Option(null, "brokers", true, "the number of brokers");
 		brokers.setType(Integer.class);

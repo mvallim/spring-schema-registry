@@ -1,7 +1,9 @@
 package org.springframework.schemaregistry;
 
-import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
-import io.confluent.kafka.schemaregistry.rest.SchemaRegistryRestApplication;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.util.Properties;
+
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +11,8 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.SocketUtils;
 
-import java.util.Properties;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
+import io.confluent.kafka.schemaregistry.rest.SchemaRegistryRestApplication;
 
 public class EmbeddedSchemaRegistryServer implements InitializingBean, DisposableBean {
 
@@ -19,7 +20,6 @@ public class EmbeddedSchemaRegistryServer implements InitializingBean, Disposabl
 
 	public static final String BEAN_NAME = "embeddedSchemaRegistry";
 
-	private static final Integer DEFAULT_SCHEMA_REGISTRY_PORT = 8081;
 	private static final String DEFAULT_KAFKA_CONNECTION_URL = "localhost:2181";
 
 	private Server server;

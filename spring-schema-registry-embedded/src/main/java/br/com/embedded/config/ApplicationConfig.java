@@ -17,7 +17,10 @@ class ApplicationConfig {
 	private Integer brokers;
 	
 	@Value("${broker-port:9092}")
-	private Integer brokersPort;
+	private Integer brokerPort;
+
+	@Value("${schema-registry-port:8081}")
+	private Integer schemaRegistryPort;
 
 	@Value("${topic-partitions:20}")
 	private Integer partitions;
@@ -32,7 +35,7 @@ class ApplicationConfig {
 		final int[] ports = new int[brokers];
 		
 		for(int i = 0; i < brokers; i++) {
-			ports[i] = brokersPort + i;
+			ports[i] = brokerPort + i;
 		}
 		
 		broker.kafkaPorts(ports);
@@ -43,8 +46,8 @@ class ApplicationConfig {
 
 	@Bean
 	public EmbeddedSchemaRegistryServer embeddedSchemaRegistryServer(final EmbeddedKafkaBroker embeddedKafkaBroker) {
-		final EmbeddedSchemaRegistryServer schemaRegistry = new EmbeddedSchemaRegistryServer(embeddedKafkaBroker.getZookeeperConnectionString());
-		LOGGER.info("Listen Schema Registry on : http://localhost:8081");
+		final EmbeddedSchemaRegistryServer schemaRegistry = new EmbeddedSchemaRegistryServer(schemaRegistryPort, embeddedKafkaBroker.getZookeeperConnectionString());
+		LOGGER.info("Listen Schema Registry on : http://localhost:{}", schemaRegistryPort);
 		return schemaRegistry;
 	}
 
