@@ -1,18 +1,14 @@
 package org.springframework.schemaregistry;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
+import br.com.sample.test.application.PeopleApplication;
+import br.com.sample.test.config.SenderConfig;
+import br.com.sample.test.model.People;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -41,10 +37,15 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.sample.test.application.PeopleApplication;
-import br.com.sample.test.config.SenderConfig;
-import br.com.sample.test.model.People;
-import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { SenderConfig.class })
@@ -65,14 +66,23 @@ public class PeopleApplicationTest {
 	@ClassRule
 	public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, 1, "people");
 
-	@Rule
-	public TestRule chain = RuleChain.outerRule(
-			new EmbeddedSchemaRegistryRule(8081, embeddedKafka.getEmbeddedKafka().getZookeeperConnectionString()));
+	private static EmbeddedSchemaRegistryServer embeddedSchemaRegistryServer;
+
+//	@ClassRule
+//	public static EmbeddedSchemaRegistryRule embeddedSchemaRegistryRule = new EmbeddedSchemaRegistryRule(embeddedKafka.getEmbeddedKafka().getZookeeperConnectionString());
+
+//	@Rule
+//	public TestRule chain = RuleChain.outerRule());
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setupClass() throws Exception {
 		final String kafkaBootstrapServers = embeddedKafka.getEmbeddedKafka().getBrokersAsString();
 		System.setProperty("spring.embedded.kafka.brokers", kafkaBootstrapServers);
+
+		embeddedSchemaRegistryServer = new EmbeddedSchemaRegistryServer(embeddedKafka.getEmbeddedKafka().getZookeeperConnectionString());
+		embeddedSchemaRegistryServer.afterPropertiesSet();
+
+		System.setProperty("spring.embedded.schema.registry", format("http://localhost:%s", embeddedSchemaRegistryServer.getPort()));
 	}
 
 	@Before
@@ -155,5 +165,10 @@ public class PeopleApplicationTest {
 		}
 
 		return clazz.cast(received.value());
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		embeddedSchemaRegistryServer.destroy();
 	}
 }
