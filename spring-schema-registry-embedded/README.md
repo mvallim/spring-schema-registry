@@ -29,11 +29,11 @@ Before run `spring-schema-registry-embedded`, you must do download the last vers
 
    ```text
    usage: spring-schema-registry-embedded
-    -b,--brokers <arg>            the number of brokers
-    -p,--topic-partitions <arg>   the number of partitions per topic
-    -P,--broker-port <arg>        the number of port broker
-    -t,--topics <arg>             the topics to create
-    -h,--help                     print this help
+       --broker-port <arg>        the number of port broker
+       --brokers <arg>            the number of brokers
+       --help                     print this help
+       --topic-partitions <arg>   the number of partitions per topic
+       --topics <arg>             the topics to create
    ```
 
 2. Without parameters

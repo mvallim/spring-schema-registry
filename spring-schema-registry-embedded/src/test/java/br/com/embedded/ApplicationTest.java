@@ -3,7 +3,6 @@ package br.com.embedded;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +15,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplicationTest {
-
+	
 	@Test
 	public void testUpSuccess() throws Exception {
-		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, new String[] { "--brokers=1" });
+		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class);
 
 		final Application application = applicationContext.getBean(Application.class);
 		final EmbeddedKafkaBroker broker = applicationContext.getBean(EmbeddedKafkaBroker.class);
@@ -31,38 +30,27 @@ public class ApplicationTest {
 
 		schemaRegistry.destroy();
 		broker.destroy();
-	}
-	
-	@Test
-	public void testUpFailInvalidParameter() {
-		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, new String[] { "--ahdsgjasgdahdk" });
 		applicationContext.close();
 	}
 	
-	@Test
-	public void testUpSuccessValidParameter() {
-		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, new String[] { "-b 1" });
-		applicationContext.close();
-	}
-
 	@Test(expected = BeanCreationException.class)
 	public void testUpFail() {
 		SpringApplication.run(Application.class, new String[] { "--brokers=1" });
 		SpringApplication.run(Application.class, new String[] { "--brokers=1" });
 	}
+	
+	@Test
+	public void testUpFailInvalidParameter() {
+		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, new String[] { "--adhsuiahdiuashdu" });
+		assertFalse(applicationContext.isActive());
+		assertFalse(applicationContext.isRunning());
+	}
 
 	@Test
-	public void testOptions() {
-		assertTrue(Application.accept(new String[] { "--brokers=1" }));
-		assertTrue(Application.accept(new String[] { "-b 1" }));
-		assertTrue(Application.accept(new String[] { }));
-		assertTrue(Application.accept(null));
-		
-		assertFalse(Application.accept(new String[] { "--dajskdhaksdjh" }));
-		assertFalse(Application.accept(new String[] { "-h" }));
-		assertFalse(Application.accept(new String[] { "--help" }));
-		assertFalse(Application.accept(new String[] { "-h", "--help" }));
-		assertFalse(Application.accept(new String[] { "--help", "-h", "-b 1" }));
+	public void testUpFailHelpParameter() {
+		final ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, new String[] { "--help" });
+		assertFalse(applicationContext.isActive());
+		assertFalse(applicationContext.isRunning());
 	}
 
 }
