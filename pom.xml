@@ -4,7 +4,7 @@
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>spring-schema-registry-parent</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -21,7 +21,7 @@
 		<url>scm:git:git@github.com:mvallim/spring-schema-registry</url>
 		<connection>scm:git:git@github.com:mvallim/spring-schema-registry</connection>
 		<developerConnection>scm:git:git@github.com:mvallim/spring-schema-registry</developerConnection>
-		<tag>spring-schema-registry-parent-0.0.4</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<name>spring-schema-registry-parent</name>
