@@ -5,6 +5,9 @@ addons:
     organization: "mvallim"
     token:
       secure: "GVVStFUjmUeuC+HCME6hGZb6Od0DIwblJfUyOIQCSqAfkWmfr0OWSfWyjtVRmp9qRg5gM2e3TY9YnOuVRgJHFsfTaJuMBGwGZpl44Mh+14IWT6XsK5h28f/U3EvL1e8pAXJzJeCeOrX/bWTDlf1eXRilXz/qGgek8cNI5tugB6FqIKIolUo8CWQcvWeRv4y/Od2CWoso/6it0OPdyv95Z5KIsSROG0WwGtL0sJlt5eDIvnsJCqpipPcLKavFddlgMvTJYSA9yPNc8YMAESaGziUDJPC9FFlJt9D1wefYiNfoZuiM4qxo6BK/padM4w9oaIWqR8wBA+Tw5HQZ2Gkh27yxiKv9OgPl3+UoJB+uT5SlTeQb/ayN8XbSvUfzF0TT5tA0QVv+Jh2E27x0TxaWZQ8LHFKbjxOTuw2ZAr8uvmmUzgCsMFMl3VXMqByFPujptqTSVx7NGgzY90yzxGqRAwwVASHD54XKOGdxxMICMBpbjoUKd0redI9g+Q79kjeK6vkQqJ6wc5WGbD+UggAJ+zdJaqen5vhvLfT40I1C3WigZqtmcR1z3cjnLyqmdbK7ZEf/1CQO3MWkEDFDrLHURKWQH/wySSG/JA9RS7YgN82b1vqItYq1YaTvbsgHLiT9uioTFKM8VSq6WfL1TViHA3Uin/G5uv+xTAs4IO5rjiY="
+      
+install:
+  - git fetch --unshallow      
 
 after_success:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=spring-schema-registry
+  - mvn clean test jacoco:report org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar install -Dsonar.projectKey=spring-schema-registry
