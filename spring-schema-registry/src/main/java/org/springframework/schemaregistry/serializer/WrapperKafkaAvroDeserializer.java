@@ -1,6 +1,7 @@
 package org.springframework.schemaregistry.serializer;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implemen
 
   private final DecoderFactory decoderFactory = DecoderFactory.get();
 
-  private final Map<String, Schema> readerSchemaCache = new ConcurrentHashMap<String, Schema>();
+  private final Map<String, Schema> readerSchemaCache = new ConcurrentHashMap<>();
 
   public WrapperKafkaAvroDeserializer() {
     super();
@@ -189,9 +190,9 @@ public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implemen
 
       Optional.ofNullable(clazz).ifPresent(readerClass -> {
         try {
-          final Schema readerSchema = readerClass.newInstance().getSchema();
+          final Schema readerSchema = readerClass.getDeclaredConstructor().newInstance().getSchema();
           readerSchemaCache.put(writerSchema.getFullName(), readerSchema);
-        } catch (final InstantiationException e) {
+        } catch (final InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
           throw new SerializationException(writerSchema.getFullName() + " specified by the " + "writers schema could not be instantiated to " + "find the readers schema.");
         } catch (final IllegalAccessException e) {
           throw new SerializationException(writerSchema.getFullName() + " specified by the " + "writers schema is not allowed to be instantiated " + "to find the readers schema.");
