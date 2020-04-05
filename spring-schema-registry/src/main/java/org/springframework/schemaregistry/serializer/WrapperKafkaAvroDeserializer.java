@@ -184,7 +184,10 @@ public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implemen
   private Schema getReaderSchema(final Schema writerSchema) {
 
     if (Objects.isNull(readerSchemaCache.get(writerSchema.getFullName()))) {
-      Optional.<Class<SpecificRecord>>ofNullable(SpecificData.get().getClass(writerSchema)).ifPresent(readerClass -> {
+
+      final Class<SpecificRecord> clazz = SpecificData.get().getClass(writerSchema);
+
+      Optional.ofNullable(clazz).ifPresent(readerClass -> {
         try {
           final Schema readerSchema = readerClass.newInstance().getSchema();
           readerSchemaCache.put(writerSchema.getFullName(), readerSchema);
@@ -194,6 +197,7 @@ public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implemen
           throw new SerializationException(writerSchema.getFullName() + " specified by the " + "writers schema is not allowed to be instantiated " + "to find the readers schema.");
         }
       });
+
     }
 
     return readerSchemaCache.get(writerSchema.getFullName());
