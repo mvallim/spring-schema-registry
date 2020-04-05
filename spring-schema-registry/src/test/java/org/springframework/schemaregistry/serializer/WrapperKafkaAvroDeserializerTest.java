@@ -14,6 +14,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
+import org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer;
 
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
