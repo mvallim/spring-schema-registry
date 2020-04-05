@@ -76,8 +76,7 @@ public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implemen
   }
 
   @Override
-  protected Object deserialize(final boolean includeSchemaAndVersion, final String topic, final Boolean isKey, final byte[] payload, final Schema readerSchema)
-      throws SerializationException {
+  protected Object deserialize(final boolean includeSchemaAndVersion, final String topic, final Boolean isKey, final byte[] payload, final Schema readerSchema) {
 
     if (Objects.isNull(payload)) {
       return null;
