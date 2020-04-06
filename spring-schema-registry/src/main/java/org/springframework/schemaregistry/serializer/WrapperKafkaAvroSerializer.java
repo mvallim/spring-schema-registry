@@ -1,7 +1,7 @@
 package org.springframework.schemaregistry.serializer;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -15,59 +15,42 @@ import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
-public class WrapperKafkaAvroSerializer implements Serializer<Object> {
+public class WrapperKafkaAvroSerializer extends KafkaAvroSerializer implements Serializer<Object> {
 
-	AbstractKafkaAvroSerDeConfig serializerConfig;
-	
-	SchemaRegistryClient schemaRegistryClient;
+  public WrapperKafkaAvroSerializer() {
+    super();
+  }
 
-	KafkaAvroSerializer serializer;
+  public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient) {
+    super(schemaRegistryClient);
+  }
 
-	public WrapperKafkaAvroSerializer() {
-		this.serializer = new KafkaAvroSerializer();
-	}
+  public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
+    super(schemaRegistryClient, configs);
+  }
 
-	public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient) {
-		this.schemaRegistryClient = schemaRegistryClient;
-		this.serializer = new KafkaAvroSerializer(this.schemaRegistryClient);
-	}
+  @Override
+  public void configure(final Map<String, ?> configs, final boolean isKey) {
 
-	public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
-		this.schemaRegistryClient = schemaRegistryClient;
-		this.serializerConfig = new KafkaAvroSerializerConfig(configs);
-		this.serializer = new KafkaAvroSerializer(this.schemaRegistryClient, this.serializerConfig.originalsWithPrefix(""));
-	}
+    if (Objects.isNull(schemaRegistry)) {
 
-	@Override
-	public void configure(final Map<String, ?> configs, final boolean isKey) {
-		
-		if (!Optional.ofNullable(this.schemaRegistryClient).isPresent()) {
-			this.serializerConfig = new KafkaAvroSerializerConfig(configs);
-			
-			final RestService restService = new RestService(serializerConfig.getSchemaRegistryUrls());
+      final AbstractKafkaAvroSerDeConfig serializerConfig = new KafkaAvroSerializerConfig(configs);
 
-			final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(configs);
+      final RestService restService = new RestService(serializerConfig.getSchemaRegistryUrls());
 
-			if (sslSocketFactory != null) {
-				restService.setSslSocketFactory(sslSocketFactory);
-			}
-			
-			this.schemaRegistryClient = new CachedSchemaRegistryClient(restService, serializerConfig.getMaxSchemasPerSubject(), this.serializerConfig.originalsWithPrefix(""));			
-		}
+      final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(configs);
 
-		this.serializer = new KafkaAvroSerializer(this.schemaRegistryClient, configs);
+      if (sslSocketFactory != null) {
+        restService.setSslSocketFactory(sslSocketFactory);
+      }
 
-		this.serializer.configure(configs, isKey);
-	}
+      final int maxSchemaObject = serializerConfig.getMaxSchemasPerSubject();
+      final Map<String, Object> originals = serializerConfig.originalsWithPrefix("");
 
-	@Override
-	public byte[] serialize(final String topic, final Object data) {
-		return this.serializer.serialize(topic, data);
-	}
+      schemaRegistry = new CachedSchemaRegistryClient(restService, maxSchemaObject, originals);
+    }
 
-	@Override
-	public void close() {
-		this.serializer.close();
-	}
+    super.configure(configs, isKey);
+  }
 
 }

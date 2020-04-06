@@ -25,6 +25,8 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
+import org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer;
+import org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer;
 import org.springframework.util.ResourceUtils;
 
 import avro.shaded.com.google.common.collect.ImmutableMap;

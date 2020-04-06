@@ -4,6 +4,7 @@ import br.com.sample.test.application.PeopleApplication;
 import br.com.sample.test.config.SenderConfig;
 import br.com.sample.test.model.People;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
