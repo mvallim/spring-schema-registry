@@ -3,11 +3,14 @@ language: java
 addons:
   sonarcloud:
     organization: "mvallim"
-    token:
-      secure: "ZMmGEoEJS9UH5MIcZh4HbAZzMS1TNtDbVi/TthULN6iWz0K0VP4e5GMGPuFsPdnwCc/oDx/E8QrjLXN8lu3lzotZMdbrb5xTcs4xw0txcGEehPf1ehu8W5L7FCmrAlAsQ2FX32kcML/NiBo1Qhi2FCIgvztg54g6YKjCXSYj0sqAHyu47CnFWW0Fgk2Nfy3dDqBN7VoAvEdaebcDxYPvZxXuOqpr5WhPaD7pDAkyJbJK5dzWhcNUWxao+X1uAwCNL7oktBv2+freWofk5AHd5ynnzBv+qPo571wPY2YLnEnNGZn0FDaN2AtyWwER5dnbhqROrw/NGzAPBCExzCxOhwm/X+Dh48JYWd8ZrWZlh5h1oXvGXtHAvQXwyFiH+u3MgXTOJmI7Wzojyn0MAFY7Gyp7oguYoF48Ht/97hJXlP/nC8tcyBMRGcCbILERjRa0w0AH/zelmYbzE39V2msRG3F6H017uUAswJHX6v2vCXgz/amxUQ8uGbzP3Uu2KtZzntK63fHBPcGpnV1qKUna85Hhm/cgV1NCu5ikYWJwayijtsAmchCACtlcLFY9FYD0KSPy1RoOHh8+8LpHMJ9IysPiB5Wz9iRg6IP//fhPd2vpZQvzLz7YRm4LzRh3IpBl2y62sayA+ktMhKMvZgtyq0mPKNep+BswRpRh9z7pE84="
-      
-install:
-  - git fetch --unshallow      
+    token: ${SONAR_TOKEN}
+
+cache:
+  directories:
+  - "$HOME/.cache"
+
+script:
+  - mvn clean compile 
 
 after_success:
   - mvn clean test jacoco:report org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar install -Dsonar.projectKey=spring-schema-registry
