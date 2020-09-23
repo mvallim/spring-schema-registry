@@ -22,11 +22,13 @@ spring:
       properties:
         max.poll.interval.ms: 3000      
         specific.avro.reader: true
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
       group-id: people
       auto-offset-reset: earliest
       enable-auto-commit: true
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
