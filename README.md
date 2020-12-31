@@ -1,6 +1,6 @@
 # Spring Schema Registry
 
-[![Build Status](https://travis-ci.org/mvallim/spring-schema-registry.svg?branch=master)](https://travis-ci.org/mvallim/spring-schema-registry)
+![Java CI with Maven](https://github.com/mvallim/spring-schema-registry/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=alert_status)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=coverage)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry)
