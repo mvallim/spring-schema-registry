@@ -36,6 +36,10 @@ The problem happens because the `kafka-avro-serializer` component uses the JVM v
 
 It is intended that the application uses a certificate to expose its API and use a second certificate to communicate with the **Schema Registry**.
 
+> **This version compatible with**
+  * schema-registry 5.3.1
+  * avro 1.9.1
+
 ## 1. Quick Start
 
 This chapter will show you how to use Kafka + Schema Registry over SSL.
