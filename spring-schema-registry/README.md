@@ -85,7 +85,7 @@ spring:
       auto-offset-reset: earliest
       enable-auto-commit: true
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
+      value-deserializer: org.springframework.schemaregistry.deserializer.WrapperKafkaAvroDeserializer
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -129,7 +129,7 @@ spring.kafka.consumer.group-id=people
 spring.kafka.consumer.auto-offset-reset=earliest
 spring.kafka.consumer.enable-auto-commit=true
 spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
-spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.serializer.WrapperKafkaAvroDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.deserializer.WrapperKafkaAvroDeserializer
 
 spring.kafka.producer.acks=all
 spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer

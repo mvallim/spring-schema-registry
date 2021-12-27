@@ -1,8 +1,8 @@
-package org.springframework.schemaregistry.serializer;
+package org.springframework.schemaregistry.deserializer;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,23 +23,20 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
+import org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer;
 import org.springframework.util.ResourceUtils;
 
 import example.avro.User;
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
-import io.confluent.kafka.serializers.KafkaAvroDecoder;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import kafka.utils.VerifiableProperties;
 
 public class WrapperKafkaAvroDeserializerTest {
 
   private Map<String, Object> props;
 
   private MockSchemaRegistryClient schemaRegistry;
-
-  private KafkaAvroDecoder avroDecoder;
 
   private Serializer<Object> serializer;
 
@@ -50,7 +47,7 @@ public class WrapperKafkaAvroDeserializerTest {
   @Before
   public void setUp() {
 
-    props = new HashMap<String, Object>();
+    props = new HashMap<>();
     props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     props.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
     props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
@@ -60,23 +57,10 @@ public class WrapperKafkaAvroDeserializerTest {
 
     schemaRegistry = new MockSchemaRegistryClient();
 
-    avroDecoder = new KafkaAvroDecoder(schemaRegistry, new VerifiableProperties(defaultConfig));
-
     serializer = new WrapperKafkaAvroSerializer(schemaRegistry, props);
 
     deserializer = new WrapperKafkaAvroDeserializer(schemaRegistry, props);
 
-  }
-
-  private IndexedRecord createOtherAvroRecord() throws IOException {
-    final String otherSchema = "{\"namespace\": \"example.avro\", \"type\": \"record\", " + "\"name\": \"Other\"," + "\"fields\": [{\"name\": \"f1\", \"type\": \"string\"},"
-        + "{\"name\": \"f2\", \"type\": \"string\"}]}";
-    final Parser parser = new Parser();
-    final Schema schema = parser.parse(otherSchema);
-    final GenericRecord avroRecord = new GenericData.Record(schema);
-    avroRecord.put("f1", "Other user");
-    avroRecord.put("f2", "Other user");
-    return avroRecord;
   }
 
   private IndexedRecord createAvroRecord() throws IOException {
@@ -96,16 +80,6 @@ public class WrapperKafkaAvroDeserializerTest {
     final Object deserialize = deserializer.deserialize(TOPIC, bytes);
 
     assertThat(deserialize.getClass(), equalTo(User.class));
-  }
-
-  @Test
-  public void assertSchemaValidAndAvroLocalDontExists() throws IOException, RestClientException {
-    final IndexedRecord avroRecord = createOtherAvroRecord();
-    schemaRegistry.register(TOPIC + "-value", avroRecord.getSchema());
-    final byte[] bytes = serializer.serialize(TOPIC, avroRecord);
-    final Object deserialize = deserializer.deserialize(TOPIC, bytes);
-
-    assertThat(deserialize.getClass(), equalTo(GenericData.Record.class));
   }
 
   @Test
@@ -159,7 +133,6 @@ public class WrapperKafkaAvroDeserializerTest {
     try (final Deserializer<Object> nullAvroSerializer = new WrapperKafkaAvroDeserializer(null)) {
       assertEquals(null, nullAvroSerializer.deserialize("test", null));
     }
-    ;
   }
 
 }

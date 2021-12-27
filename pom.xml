@@ -11,9 +11,9 @@
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<schema.registry.version>5.2.1</schema.registry.version>
+		<schema.registry.version>5.3.1</schema.registry.version>
 		<spring.boot.version>2.1.2.RELEASE</spring.boot.version>
-		<avro.version>1.8.2</avro.version>
+		<avro.version>1.9.1</avro.version>
 		<commons-cli>1.4</commons-cli>
 	</properties>
 
@@ -70,11 +70,6 @@
 			<!-- Spring Boot -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter</artifactId>
-				<version>${spring.boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-configuration-processor</artifactId>
 				<version>${spring.boot.version}</version>
 			</dependency>
@@ -98,6 +93,7 @@
 				<groupId>org.springframework.kafka</groupId>
 				<artifactId>spring-kafka</artifactId>
 				<version>${spring.boot.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- Confluent -->
@@ -106,11 +102,13 @@
 				<artifactId>rest-utils</artifactId>
 				<version>${schema.registry.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>io.confluent</groupId>
 				<artifactId>kafka-avro-serializer</artifactId>
 				<version>${schema.registry.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>io.confluent</groupId>
 				<artifactId>kafka-schema-registry</artifactId>
@@ -131,6 +129,7 @@
 				<scope>test</scope>
 			</dependency>
 
+			<!-- Modules -->
 			<dependency>
 				<groupId>com.github.mvallim</groupId>
 				<artifactId>spring-schema-registry</artifactId>
@@ -141,6 +140,14 @@
 				<groupId>com.github.mvallim</groupId>
 				<artifactId>spring-schema-registry-test</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 		</dependencies>

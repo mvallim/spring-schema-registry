@@ -1,9 +1,8 @@
 package org.springframework.schemaregistry.core;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -15,273 +14,250 @@ import org.junit.Test;
 
 public class SchemaRegistrySSLSocketFactoryTest {
 
-	private final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
+  private final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
 
-	@Before
-	public void SetUp() throws NoSuchAlgorithmException {
-		this.properties.setProtocol("SSL");
-		this.properties.setKeyPassword("changeit");
-		this.properties.setKeyStoreLocation("classpath:keystore-test.jks");
-		this.properties.setKeyStorePassword("changeit");
-		this.properties.setKeyManagerAlgorithm("SunX509");
-		this.properties.setKeyStoreType("JKS");
-		this.properties.setTrustStoreLocation("classpath:truststore-test.jks");
-		this.properties.setTrustStorePassword("changeit");
-		this.properties.setTrustManagerAlgorithm("SunX509");
-		this.properties.setTrustStoreType("JKS");
-		this.properties.setProvider(SSLContext.getDefault().getProvider());
-	}
+  @Before
+  public void SetUp() throws NoSuchAlgorithmException {
+    properties.setProtocol("SSL");
+    properties.setKeyPassword("changeit");
+    properties.setKeyStoreLocation("classpath:keystore-test.jks");
+    properties.setKeyStorePassword("changeit");
+    properties.setKeyManagerAlgorithm("SunX509");
+    properties.setKeyStoreType("JKS");
+    properties.setTrustStoreLocation("classpath:truststore-test.jks");
+    properties.setTrustStorePassword("changeit");
+    properties.setTrustManagerAlgorithm("SunX509");
+    properties.setTrustStoreType("JKS");
+    properties.setProvider(SSLContext.getDefault().getProvider());
+  }
 
-	@Test
-	public void whenMinimalValidConfigurationGetSslSocketFactorySuccess() {
+  @Test
+  public void whenMinimalValidConfigurationGetSslSocketFactorySuccess() {
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenInvalidSSLConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidSSLConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setProtocol(null);
+    properties.setProtocol(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidProviderConfigurationGetSslSocketFactorySuccess() {
+  @Test
+  public void whenInvalidProviderConfigurationGetSslSocketFactorySuccess() {
 
-		this.properties.setProvider(null);
+    properties.setProvider(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyPassworConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidKeyPassworConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyPassword("xpto");
+    properties.setKeyPassword("xpto");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyPassworIsNullConfigurationGetSslSocketFactorySuccess() {
+  @Test
+  public void whenInvalidKeyPassworIsNullConfigurationGetSslSocketFactorySuccess() {
 
-		this.properties.setKeyPassword(null);
+    properties.setKeyPassword(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenInvalidProtocolConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidProtocolConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setProtocol("XPTO");
+    properties.setProtocol("XPTO");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyStoreLocation("tmp/keystore-test.jks");
+    properties.setKeyStoreLocation("tmp/keystore-test.jks");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyStorePassword("xpto");
+    properties.setKeyStorePassword("xpto");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyStoreType("TXT");
+    properties.setKeyStoreType("TXT");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyManagerAlgorithm("XPTO");
+    properties.setKeyManagerAlgorithm("XPTO");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyStoreLocation(null);
+    properties.setKeyStoreLocation(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullKeyStorePasswordConfigurationGetSslSocketFactorySuccess() {
+  @Test
+  public void whenNullKeyStorePasswordConfigurationGetSslSocketFactorySuccess() {
 
-		this.properties.setKeyStorePassword(null);
+    properties.setKeyStorePassword(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenNullKeyPasswordAndKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullKeyPasswordAndKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyPassword(null);
-		this.properties.setKeyStorePassword(null);
+    properties.setKeyPassword(null);
+    properties.setKeyStorePassword(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyStoreType(null);
+    properties.setKeyStoreType(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setKeyManagerAlgorithm(null);
+    properties.setKeyManagerAlgorithm(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenInvalidTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustStoreLocation("tmp/keystore-test.jks");
+    properties.setTrustStoreLocation("tmp/keystore-test.jks");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidTrustStorePasswordConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidTrustStorePasswordConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustStorePassword("xpto");
+    properties.setTrustStorePassword("xpto");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustStoreType("TXT");
+    properties.setTrustStoreType("TXT");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenInvalidTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenInvalidTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustManagerAlgorithm("XPTO");
+    properties.setTrustManagerAlgorithm("XPTO");
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustStoreLocation(null);
+    properties.setTrustStoreLocation(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullTrustStorePasswordConfigurationGetSslSocketFactorySuccess() {
+  @Test
+  public void whenNullTrustStorePasswordConfigurationGetSslSocketFactorySuccess() {
 
-		this.properties.setTrustStorePassword(null);
+    properties.setTrustStorePassword(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
-	@Test
-	public void whenNullTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustStoreType(null);
+    properties.setTrustStoreType(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(nullValue()));
-	}
+    assertThat(sslSocketFactory, nullValue());
+  }
 
-	@Test
-	public void whenNullTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  @Test
+  public void whenNullTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
-		this.properties.setTrustManagerAlgorithm(null);
+    properties.setTrustManagerAlgorithm(null);
 
-		final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory
-				.createSslSocketFactory(this.properties);
+    final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-		assertThat(sslSocketFactory, is(notNullValue()));
-	}
+    assertThat(sslSocketFactory, notNullValue());
+  }
 
 }
