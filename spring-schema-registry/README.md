@@ -44,9 +44,9 @@ This chapter will show you how to use Kafka + Schema Registry over SSL.
 
 ```xml
 <dependency>
-    <groupId>com.github.mvallim</groupId>
-    <artifactId>spring-schema-registry</artifactId>
-    <version>0.0.4</version>
+  <groupId>com.github.mvallim</groupId>
+  <artifactId>spring-schema-registry</artifactId>
+  <version>0.0.4</version>
 </dependency>
 ```
 
@@ -152,15 +152,15 @@ server.ssl.trustStoreType=JKS
 @Configuration
 public class ProducerConfig {
 
-    @Bean
-    public ProducerFactory<?, ?> producerFactory(final KafkaProperties kafkaProperties) {
-        return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
-    }
+  @Bean
+  public ProducerFactory<?, ?> producerFactory(final KafkaProperties kafkaProperties) {
+    return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
+  }
 
-    @Bean
-    public KafkaTemplate<String, GenericRecord> kafkaTemplate(final ProducerFactory<String, GenericRecord> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
-    }
+  @Bean
+  public KafkaTemplate<String, GenericRecord> kafkaTemplate(final ProducerFactory<String, GenericRecord> producerFactory) {
+    return new KafkaTemplate<>(producerFactory);
+  }
 }
 ```
 
@@ -171,19 +171,17 @@ public class ProducerConfig {
 @Configuration
 public class ConsumerConfig {
 
-    @Bean
-    public ConsumerFactory<?, ?> consumerFactory(final KafkaProperties kafkaProperties) {
-        return new DefaultKafkaConsumerFactory<>(kafkaProperties.buildConsumerProperties());
-    }
+  @Bean
+  public ConsumerFactory<?, ?> consumerFactory(final KafkaProperties kafkaProperties) {
+    return new DefaultKafkaConsumerFactory<>(kafkaProperties.buildConsumerProperties());
+  }
 
-    @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, GenericRecord>> containerFactory(final ConsumerFactory<String, GenericRecord> consumerFactory) {
-        final ConcurrentKafkaListenerContainerFactory<String, GenericRecord> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
-
-        containerFactory.setConsumerFactory(consumerFactory);
-        containerFactory.setConcurrency(20);
-
-        return containerFactory;
-    }
+  @Bean
+  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, GenericRecord>> containerFactory(final ConsumerFactory<String, GenericRecord> consumerFactory) {
+    final ConcurrentKafkaListenerContainerFactory<String, GenericRecord> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+    containerFactory.setConsumerFactory(consumerFactory);
+    containerFactory.setConcurrency(20);
+    return containerFactory;
+  }
 }
 ```
