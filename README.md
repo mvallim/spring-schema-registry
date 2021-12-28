@@ -1,4 +1,9 @@
 # Spring Schema Registry
+![Java CI with Maven](https://github.com/mvallim/spring-schema-registry/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=alert_status)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=coverage)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL
 
