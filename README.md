@@ -158,7 +158,7 @@ spring:
     bootstrap-servers: localhost:9092
     properties:
       security.protocol: SSL
-      auto.register.schemas: false
+      auto.register.schemas: true
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
       schema.registry.url: https://localhost:8082
     ssl:
@@ -204,7 +204,7 @@ spring.kafka.properties.auto.register.schemas=false
 spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
 spring.kafka.properties.schema.registry.url=https://localhost:8082
 spring.kafka.properties.security.protocol=SSL
-spring.kafka.properties.auto.register.schemas=false
+spring.kafka.properties.auto.register.schemas=true
 spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
 
 spring.kafka.ssl.protocol=SSL
