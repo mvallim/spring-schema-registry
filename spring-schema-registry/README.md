@@ -46,7 +46,57 @@ It is intended that the application uses a certificate to expose its API and use
 
 This chapter will show you how to use Kafka + Schema Registry over SSL.
 
-### 1.1 pom.xml
+## 1.1 Create certificates
+
+Run `generate-certificates.sh` [source](./generate-certificates.sh)
+
+Expected output:
+
+```text
+=> ROOT and CA
+ => Generate the private keys (for root and ca)
+ => Generate the root certificate
+ => Generate certificate for ca signed by root (root -> ca)
+ => Import ca cert chain into ca.jks
+=> Kafka Server
+ => Generate the private keys (for the server)
+ => Generate certificate for the server signed by ca (root -> ca -> kafka-server)
+ => Import the server cert chain into kafka.server.keystore.jks
+ => Import the server cert chain into kafka.server.truststore.jks
+=> Schema Registry Server
+ => Generate the private keys (for schema-registry-server)
+ => Generate certificate for the server signed by ca (root -> ca -> schema-registry-server)
+ => Import the server cert chain into schema-registry.server.keystore.jks
+ => Import the server cert chain into schema-registry.server.truststore.jks
+=> Control Center Server
+ => Generate the private keys (for control-center-server)
+ => Generate certificate for the server signed by ca (root -> ca -> control-center-server)
+ => Import the server cert chain into control-center.server.keystore.jks
+ => Import the server cert chain into control-center.server.truststore.jks
+=> Appplication Client
+ => Generate the private keys (for application-client)
+ => Generate certificate for the client signed by ca (root -> ca -> application-client)
+ => Import the client cert chain into application.client.keystore.jks
+ => Import the client cert chain into application.client.truststore.jks
+=> Clean up
+ => Move files
+```
+
+## 1.2 Running stack
+
+Run `docker-compose up -d` [source](./docker-compose.yml)
+
+Expected output:
+
+```text
+Creating network "schema" with the default driver
+Creating zookeeper ... done
+Creating kafka     ... done
+Creating schema-registry ... done
+Creating control-center  ... done
+```
+
+### 1.3 pom.xml
 
 ```xml
 <dependency>
@@ -56,31 +106,28 @@ This chapter will show you how to use Kafka + Schema Registry over SSL.
 </dependency>
 ```
 
-### 1.2 Configure application
+### 1.4 Configure application
 
 ***Attention**: You must use YAML **or** PROPERTIES.*
 
-#### 1.2.1 application.yaml
+#### 1.4.1 application.yaml
 
 ```yaml
 spring:
   kafka:
-    bootstrap-servers:
-    - kafka-node01:9093
-    - kafka-node02:9093
-    - kafka-node03:9093
+    bootstrap-servers: localhost:9092
     properties:
       security.protocol: SSL
       auto.register.schemas: false
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
-      schema.registry.url: https://schema-registry-node01:8082, https://schema-registry-node02:8082, https://schema-registry-node03:8082
+      schema.registry.url: https://localhost:8082
     ssl:
       protocol: SSL
       key-password: changeit
-      key-store-location: classpath:application.client.keystore.jks
+      key-store-location: file:certificates/application/application.client.keystore.jks
       key-store-password: changeit
       key-store-type: JKS
-      trust-store-location: classpath:application.client.truststore.jks
+      trust-store-location: file:certificates/application/application.client.truststore.jks
       trust-store-password: changeit
       trust-store-type: JKS
     consumer:
@@ -108,24 +155,24 @@ server:
     trustStoreType: JKS
 ```
 
-#### 1.2.2 application.properties
+#### 1.4.2 application.properties
 
 ```properties
-spring.kafka.bootstrap-servers=kafka-node01:9093,kafka-node02:9093,kafka-node03:9093
+spring.kafka.bootstrap-servers=localhost:9092
 
 spring.kafka.properties.auto.register.schemas=false
 spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
-spring.kafka.properties.schema.registry.url=https://schema-registry-node01:8082,https://schema-registry-node02:8082,https://schema-registry-node03:8082
+spring.kafka.properties.schema.registry.url=https://localhost:8082
 spring.kafka.properties.security.protocol=SSL
 spring.kafka.properties.auto.register.schemas=false
 spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
 
 spring.kafka.ssl.protocol=SSL
 spring.kafka.ssl.key-password=changeit
-spring.kafka.ssl.key-store-location=classpath:kafka.client.keystore.jks
+spring.kafka.ssl.key-store-location=file:certificates/application/application.client.keystore.jks
 spring.kafka.ssl.key-store-password=changeit
 spring.kafka.ssl.key-store-type=JKS
-spring.kafka.ssl.trust-store-location=classpath:kafka.client.truststore.jks
+spring.kafka.ssl.trust-store-location=file:certificates/application/application.client.truststore.jks
 spring.kafka.ssl.trust-store-password=changeit
 spring.kafka.ssl.trust-store-type=JKS
 
@@ -150,9 +197,9 @@ server.ssl.trust-store-password=changeit
 server.ssl.trustStoreType=JKS
 ```
 
-### 1.3 Configure beans
+### 1.5 Configure beans
 
-#### 1.3.1 ProducerConfig
+#### 1.5.1 ProducerConfig
 
 ```java
 @Configuration
@@ -170,7 +217,7 @@ public class ProducerConfig {
 }
 ```
 
-#### 1.3.2 ConsumerConfig
+#### 1.5.2 ConsumerConfig
 
 ```java
 @EnableKafka
