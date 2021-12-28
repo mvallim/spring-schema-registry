@@ -3,7 +3,7 @@
 echo "=> ROOT and CA"
 
 echo " => Generate the private keys (for root and ca)"
-spinner keytool \
+keytool \
 	-genkeypair \
 	-alias root \
 	-dname "CN=root, O=Home, OU=Home, L=Campinas, C=BR" \

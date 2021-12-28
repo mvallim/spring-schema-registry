@@ -84,6 +84,7 @@ target/
 .project
 .classpath
 
+certificates/
 build/
 .idea/
 .sts4-cache/
