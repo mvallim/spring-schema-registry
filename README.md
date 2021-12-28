@@ -295,6 +295,7 @@ We use [GitHub](https://github.com/mvallim/spring-schema-registry) for versionin
 
 * **Marcos Vallim** - *Initial work, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
 * **Carlos Batistão** - *Initial work, Development, Test, Documentation* - [cezbatistao](https://github.com/cezbatistao)
+* **Ricardo Comar** - *Development, Test* - [ricardo-comar](https://github.com/ricardo-comar)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
