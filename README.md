@@ -51,15 +51,18 @@ It is intended that the application uses a certificate to expose its API and use
 
 This chapter will show you how to use Kafka + Schema Registry over SSL.
 
-## 1.1 Create certificates
+## 1.1 Create certificates [generate-certificates.sh](./generate-certificates.sh)
 
-Run `generate-certificates.sh` 
-
-[generate-certificates.sh](./generate-certificates.sh)
+Run 
+```console
+./generate-certificates.sh
+```
 
 Expected output:
 
-```text
+```console
+$./generate-certificates.sh
+
 => ROOT and CA
  => Generate the private keys (for root and ca)
  => Generate the root certificate
@@ -89,15 +92,16 @@ Expected output:
  => Move files
 ```
 
-## 1.2 Running stack
+## 1.2 Running stack [docker-compose-yml](./docker-compose.yml)
 
-Run `docker-compose up -d`
-
-[docker-compose-yml](./docker-compose.yml)
+Run
+```console
+docker-compose up -d
+```
 
 Expected output:
 
-```text
+```console
 Creating network "schema" with the default driver
 Creating zookeeper ... done
 Creating kafka     ... done
