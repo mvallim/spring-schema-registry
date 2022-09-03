@@ -118,7 +118,7 @@ You can pull it from the central Maven repositories:
 <dependency>
   <groupId>com.github.mvallim</groupId>
   <artifactId>spring-schema-registry</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
 </dependency>
 ```
 
@@ -138,7 +138,7 @@ If you want to try a snapshot version, add the following repository:
 #### Gradle
 
 ```groovy
-implementation 'com.github.mvallim:spring-schema-registry:2.0.0'
+implementation 'com.github.mvallim:spring-schema-registry:2.1.0'
 ```
 
 If you want to try a snapshot version, add the following repository:
@@ -151,7 +151,11 @@ repositories {
 }
 ```
 
-### 1.4 Configure application
+### 1.4 SpecificKafkaAvroDeserializer
+
+This Avro event deserializer is intended to deserialize events from a topic that have events registered in the Schema Registry and **with the Avros imported into the application**.
+
+This deserializer does not handle events that are not registered in Schema Registry and/or Avros with compatibility problem, in these cases an exception will be thrown.
 
 ***Attention**: You must use YAML **or** PROPERTIES.*
 
@@ -183,7 +187,7 @@ spring:
       auto-offset-reset: earliest
       enable-auto-commit: true
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.schemaregistry.deserializer.WrapperKafkaAvroDeserializer
+      value-deserializer: org.springframework.schemaregistry.deserializer.SpecificKafkaAvroDeserializer
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -227,7 +231,7 @@ spring.kafka.consumer.group-id=people
 spring.kafka.consumer.auto-offset-reset=earliest
 spring.kafka.consumer.enable-auto-commit=true
 spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
-spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.deserializer.WrapperKafkaAvroDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.deserializer.SpecificKafkaAvroDeserializer
 
 spring.kafka.producer.acks=all
 spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
@@ -242,9 +246,106 @@ server.ssl.trust-store-password=changeit
 server.ssl.trustStoreType=JKS
 ```
 
-### 1.5 Configure beans
+### 1.5 GenericKafkaAvroDeserializer
 
-#### 1.5.1 ProducerConfig
+This Avro event deserializer is intended to deserialize each and every event from a topic that is registered in the Schema Registry, **with or without Avros imported into the application**.
+
+For example, currently the application is prepared to consume and deserialize events of type `A`, but if some other event that the application is not prepared to consume occurs in this topic, it will be transformed into a `GenericRecord` (provided that this type of event is registered in the Schema Registry). So it is possible to consume all events without deserialization errors. This prevents the application that wants to consume only certain types of events from a topic, from not forcing the import of all Avros (.svc) into its application.
+
+This deserializer does not handle events that are not registered in Schema Registry and/or Avros with compatibility problem, in these cases an exception will be thrown.
+
+***Attention**: You must use YAML **or** PROPERTIES.*
+
+#### 1.5.1 application.yaml
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      security.protocol: SSL
+      auto.register.schemas: true
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+      schema.registry.url: https://localhost:8082
+    ssl:
+      protocol: SSL
+      key-password: changeit
+      key-store-location: file:certificates/application/application.client.keystore.jks
+      key-store-password: changeit
+      key-store-type: JKS
+      trust-store-location: file:certificates/application/application.client.truststore.jks
+      trust-store-password: changeit
+      trust-store-type: JKS
+    consumer:
+      properties:
+        max.poll.interval.ms: 3000
+        specific.avro.reader: true
+      group-id: people
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.schemaregistry.deserializer.GenericKafkaAvroDeserializer
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: changeit
+    keyStoreType: JKS
+    trust-store: classpath:truststore.jks
+    trust-store-password: changeit
+    trustStoreType: JKS
+```
+
+#### 1.5.2 application.properties
+
+```properties
+spring.kafka.bootstrap-servers=localhost:9092
+
+spring.kafka.properties.auto.register.schemas=false
+spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+spring.kafka.properties.schema.registry.url=https://localhost:8082
+spring.kafka.properties.security.protocol=SSL
+spring.kafka.properties.auto.register.schemas=true
+spring.kafka.properties.value.subject.name.strategy=io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+
+spring.kafka.ssl.protocol=SSL
+spring.kafka.ssl.key-password=changeit
+spring.kafka.ssl.key-store-location=file:certificates/application/application.client.keystore.jks
+spring.kafka.ssl.key-store-password=changeit
+spring.kafka.ssl.key-store-type=JKS
+spring.kafka.ssl.trust-store-location=file:certificates/application/application.client.truststore.jks
+spring.kafka.ssl.trust-store-password=changeit
+spring.kafka.ssl.trust-store-type=JKS
+
+spring.kafka.consumer.properties.max.poll.interval.ms=3000
+spring.kafka.consumer.properties.specific.avro.reader=true
+spring.kafka.consumer.group-id=people
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.enable-auto-commit=true
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.deserializer.GenericKafkaAvroDeserializer
+
+spring.kafka.producer.acks=all
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+
+server.port=8443
+server.ssl.key-store=classpath:keystore.jks
+server.ssl.key-store-password=changeit
+server.ssl.keyStoreType=JKS
+server.ssl.trust-store=classpath:truststore.jks
+server.ssl.trust-store-password=changeit
+server.ssl.trustStoreType=JKS
+```
+
+### 1.6 Configure beans
+
+#### 1.6.1 ProducerConfig
 
 ```java
 @Configuration
@@ -262,7 +363,7 @@ public class ProducerConfig {
 }
 ```
 
-#### 1.5.2 ConsumerConfig
+#### 1.6.2 ConsumerConfig
 
 ```java
 @EnableKafka

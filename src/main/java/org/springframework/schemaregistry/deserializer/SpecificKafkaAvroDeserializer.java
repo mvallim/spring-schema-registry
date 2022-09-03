@@ -15,17 +15,17 @@ import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 
-public class WrapperKafkaAvroDeserializer extends KafkaAvroDeserializer implements Deserializer<Object> {
+public class SpecificKafkaAvroDeserializer extends KafkaAvroDeserializer implements Deserializer<Object> {
 
-  public WrapperKafkaAvroDeserializer() {
+  public SpecificKafkaAvroDeserializer() {
     super();
   }
 
-  public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient) {
+  public SpecificKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient) {
     super(schemaRegistryClient);
   }
 
-  public WrapperKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
+  public SpecificKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
     super(schemaRegistryClient, configs);
   }
 

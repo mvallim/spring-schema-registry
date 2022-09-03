@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>spring-schema-registry</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>spring-schema-registry</name>
@@ -20,6 +18,7 @@
 		<commons.lang.version>3.12.0</commons.lang.version>
 		<spring.boot.version>2.2.13.RELEASE</spring.boot.version>
 		<avro.version>1.9.1</avro.version>
+		<lombok.version>1.18.20</lombok.version>
 		<commons-cli>1.4</commons-cli>
 	</properties>
 
@@ -74,6 +73,13 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- Confluent -->
@@ -255,6 +261,13 @@
 					<optimize>true</optimize>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
+					<annotationProcessorPaths>
+						<annotationProcessorPath>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</annotationProcessorPath>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 

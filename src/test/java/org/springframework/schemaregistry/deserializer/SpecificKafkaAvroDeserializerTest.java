@@ -23,7 +23,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
-import org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer;
+import org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer;
 import org.springframework.util.ResourceUtils;
 
 import example.avro.User;
@@ -32,7 +32,7 @@ import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientExcept
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 
-public class WrapperKafkaAvroDeserializerTest {
+public class SpecificKafkaAvroDeserializerTest {
 
   private Map<String, Object> props;
 
@@ -57,9 +57,9 @@ public class WrapperKafkaAvroDeserializerTest {
 
     schemaRegistry = new MockSchemaRegistryClient();
 
-    serializer = new WrapperKafkaAvroSerializer(schemaRegistry, props);
+    serializer = new SpecificKafkaAvroSerializer(schemaRegistry, props);
 
-    deserializer = new WrapperKafkaAvroDeserializer(schemaRegistry, props);
+    deserializer = new SpecificKafkaAvroDeserializer(schemaRegistry, props);
 
   }
 
@@ -99,7 +99,7 @@ public class WrapperKafkaAvroDeserializerTest {
     properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     properties.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-    try (final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer()) {
+    try (final Deserializer<Object> deserializer = new SpecificKafkaAvroDeserializer()) {
       deserializer.configure(properties, false);
       assertEquals(null, deserializer.deserialize("test", null));
     }
@@ -111,7 +111,7 @@ public class WrapperKafkaAvroDeserializerTest {
     properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     properties.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-    try (final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer()) {
+    try (final Deserializer<Object> deserializer = new SpecificKafkaAvroDeserializer()) {
       deserializer.configure(properties, false);
       assertEquals(null, deserializer.deserialize("test", null));
     }
@@ -119,7 +119,7 @@ public class WrapperKafkaAvroDeserializerTest {
 
   @Test
   public void testConfigure() {
-    try (final Deserializer<Object> deserializer = new WrapperKafkaAvroDeserializer(new MockSchemaRegistryClient())) {
+    try (final Deserializer<Object> deserializer = new SpecificKafkaAvroDeserializer(new MockSchemaRegistryClient())) {
       final Map<String, Object> props = new HashMap<>();
       props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
       props.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
@@ -130,7 +130,7 @@ public class WrapperKafkaAvroDeserializerTest {
 
   @Test
   public void testNull() {
-    try (final Deserializer<Object> nullAvroSerializer = new WrapperKafkaAvroDeserializer(null)) {
+    try (final Deserializer<Object> nullAvroSerializer = new SpecificKafkaAvroDeserializer(null)) {
       assertEquals(null, nullAvroSerializer.deserialize("test", null));
     }
   }
