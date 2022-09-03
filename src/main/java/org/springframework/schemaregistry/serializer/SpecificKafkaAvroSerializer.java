@@ -15,17 +15,17 @@ import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
-public class WrapperKafkaAvroSerializer extends KafkaAvroSerializer implements Serializer<Object> {
+public class SpecificKafkaAvroSerializer extends KafkaAvroSerializer implements Serializer<Object> {
 
-  public WrapperKafkaAvroSerializer() {
+  public SpecificKafkaAvroSerializer() {
     super();
   }
 
-  public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient) {
+  public SpecificKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient) {
     super(schemaRegistryClient);
   }
 
-  public WrapperKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
+  public SpecificKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
     super(schemaRegistryClient, configs);
   }
 

@@ -25,7 +25,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
-import org.springframework.schemaregistry.deserializer.WrapperKafkaAvroDeserializer;
+import org.springframework.schemaregistry.deserializer.SpecificKafkaAvroDeserializer;
 import org.springframework.util.ResourceUtils;
 
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
@@ -35,7 +35,7 @@ import io.confluent.kafka.serializers.KafkaAvroDecoder;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import kafka.utils.VerifiableProperties;
 
-public class WrapperKafkaAvroSerializerTest {
+public class SpecificKafkaAvroSerializerTest {
 
   private Map<String, String> props;
 
@@ -61,9 +61,9 @@ public class WrapperKafkaAvroSerializerTest {
 
     avroDecoder = new KafkaAvroDecoder(schemaRegistry, new VerifiableProperties(defaultConfig));
 
-    serializer = new WrapperKafkaAvroSerializer(schemaRegistry, props);
+    serializer = new SpecificKafkaAvroSerializer(schemaRegistry, props);
 
-    deserializer = new WrapperKafkaAvroDeserializer(schemaRegistry, props);
+    deserializer = new SpecificKafkaAvroDeserializer(schemaRegistry, props);
   }
 
   @Test
@@ -133,7 +133,7 @@ public class WrapperKafkaAvroSerializerTest {
     properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     properties.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-    try (final Serializer<Object> serializer = new WrapperKafkaAvroSerializer()) {
+    try (final Serializer<Object> serializer = new SpecificKafkaAvroSerializer()) {
       serializer.configure(properties, false);
       assertEquals(null, serializer.serialize(TOPIC, null));
     }
@@ -145,7 +145,7 @@ public class WrapperKafkaAvroSerializerTest {
     properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     properties.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-    try (final Serializer<Object> serializer = new WrapperKafkaAvroSerializer()) {
+    try (final Serializer<Object> serializer = new SpecificKafkaAvroSerializer()) {
       serializer.configure(properties, false);
       assertEquals(null, serializer.serialize(TOPIC, null));
     }
@@ -179,7 +179,7 @@ public class WrapperKafkaAvroSerializerTest {
 
   @Test
   public void testNull() {
-    try (final Serializer<Object> nullAvroSerializer = new WrapperKafkaAvroSerializer(null)) {
+    try (final Serializer<Object> nullAvroSerializer = new SpecificKafkaAvroSerializer(null)) {
       assertEquals(null, nullAvroSerializer.serialize("test", null));
     }
   }
@@ -193,7 +193,7 @@ public class WrapperKafkaAvroSerializerTest {
     final Properties defaultConfig = new Properties();
     defaultConfig.putAll(props);
 
-    final Deserializer<Object> specificAvroDeserializer = new WrapperKafkaAvroDeserializer(schemaRegistry, configs);
+    final Deserializer<Object> specificAvroDeserializer = new SpecificKafkaAvroDeserializer(schemaRegistry, configs);
     final KafkaAvroDecoder specificAvroDecoder = new KafkaAvroDecoder(schemaRegistry, new VerifiableProperties(defaultConfig));
 
     final String message = "testKafkaAvroSerializerSpecificRecordWithPrimitives";

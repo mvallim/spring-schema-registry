@@ -1,6 +1,7 @@
 package org.springframework.schemaregistry.serializer;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import org.apache.avro.io.BinaryEncoder;
@@ -28,7 +29,7 @@ public class AvroSerializer implements Serializer<SpecificRecord> {
         datumWriter.setSchema(data.getSchema());
         datumWriter.write(data, binaryEncoder);
         binaryEncoder.flush();
-        headers.add("schema", data.getSchema().toString().getBytes());
+        headers.add("schema", data.getSchema().toString().getBytes(StandardCharsets.UTF_8));
         return stream.toByteArray();
       } catch (final Exception ex) {
         throw new SerializationException("Can't serialize data='" + data + "' for topic='" + topic + "'", ex);
