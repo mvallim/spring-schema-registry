@@ -191,7 +191,7 @@ spring:
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+      value-serializer: org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer
 
 server:
   port: 8443
@@ -235,7 +235,7 @@ spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.dese
 
 spring.kafka.producer.acks=all
 spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
-spring.kafka.producer.value-serializer=org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+spring.kafka.producer.value-serializer=org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer
 
 server.port=8443
 server.ssl.key-store=classpath:keystore.jks
@@ -288,7 +288,7 @@ spring:
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+      value-serializer: org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer
 
 server:
   port: 8443
@@ -332,7 +332,7 @@ spring.kafka.consumer.value-deserializer=org.springframework.schemaregistry.dese
 
 spring.kafka.producer.acks=all
 spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
-spring.kafka.producer.value-serializer=org.springframework.schemaregistry.serializer.WrapperKafkaAvroSerializer
+spring.kafka.producer.value-serializer=org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer
 
 server.port=8443
 server.ssl.key-store=classpath:keystore.jks
