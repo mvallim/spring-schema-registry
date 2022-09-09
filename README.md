@@ -29,13 +29,13 @@ The purpose of this module is to solve the problem of multiple keystores using S
 The failure happens in a scenario where we would expect it to be fully functional, where the application uses one certificate to securely expose endpoints, and uses other certificates to communicate with Schema Registry and Kafka.
 
 ```text
-+-------------------+            +-----------------------------+
-|                   |<---json--->| Schema Registry + SSL + TLS |
-|                   |            +-----------------------------+
++-------------------+            +------------------------------+
+|                   |<---json--->| Schema Registry + SSL + mTLS |
+|                   |            +------------------------------+
 | Spring Boot + SSL |
-|                   |            +-----------------------------+
-|                   |<--binary-->|      Kafka + SSL + TLS      |  
-+-------------------+            +-----------------------------+
+|                   |            +------------------------------+
+|                   |<--binary-->|      Kafka + SSL + mTLS      |  
++-------------------+            +------------------------------+
 ```
 
 The problem happens because the `kafka-avro-serializer` component uses the JVM variables `javax.net.ssl.trustStore`, `javax.net.ssl.keyStore`, `javax.net.ssl.trustStorePassword` and `javax.net.ssl.keyStorePassword`, and these variables apply to the whole application. As a consequence, if we use a certificate to publish the application API, it will be used by the `kafka-avro-serializer` component.
