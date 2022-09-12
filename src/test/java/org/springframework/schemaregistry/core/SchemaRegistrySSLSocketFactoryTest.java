@@ -1,22 +1,21 @@
 package org.springframework.schemaregistry.core;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.security.NoSuchAlgorithmException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import java.security.NoSuchAlgorithmException;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class SchemaRegistrySSLSocketFactoryTest {
 
   private final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
 
-  @Before
+  @BeforeEach
   public void SetUp() throws NoSuchAlgorithmException {
     properties.setProtocol("SSL");
     properties.setKeyPassword("changeit");
@@ -36,7 +35,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -46,7 +45,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -56,7 +55,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -66,7 +65,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -76,7 +75,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -86,7 +85,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -96,7 +95,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -106,7 +105,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -116,7 +115,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -126,7 +125,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -136,7 +135,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -146,7 +145,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -157,7 +156,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -167,7 +166,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -177,7 +176,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -187,7 +186,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -197,7 +196,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -207,7 +206,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -217,7 +216,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -227,7 +226,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -237,7 +236,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
   @Test
@@ -247,7 +246,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, nullValue());
+    assertThat(sslSocketFactory).isNull();
   }
 
   @Test
@@ -257,7 +256,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
-    assertThat(sslSocketFactory, notNullValue());
+    assertThat(sslSocketFactory).isNotNull();
   }
 
 }

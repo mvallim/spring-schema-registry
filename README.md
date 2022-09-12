@@ -45,8 +45,8 @@ It is intended that the application uses a certificate to expose its API and use
 ## Notice
 
   * Compatible with **JDK 8, 11, 15, 16 and 17**
-  * Compatible with **schema-registry version 5.3.1 or later**
-  * Compatible with **avro version 1.9.1 or later**
+  * Compatible with **schema-registry version 7.1.3 or later**
+  * Compatible with **avro version 1.11.1 or later**
 
 ## 1. Quick Start
 
@@ -118,7 +118,7 @@ You can pull it from the central Maven repositories:
 <dependency>
   <groupId>com.github.mvallim</groupId>
   <artifactId>spring-schema-registry</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
@@ -138,7 +138,7 @@ If you want to try a snapshot version, add the following repository:
 #### Gradle
 
 ```groovy
-implementation 'com.github.mvallim:spring-schema-registry:2.1.0'
+implementation 'com.github.mvallim:spring-schema-registry:2.2.0'
 ```
 
 If you want to try a snapshot version, add the following repository:

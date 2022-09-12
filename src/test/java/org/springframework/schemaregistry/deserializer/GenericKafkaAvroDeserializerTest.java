@@ -1,14 +1,12 @@
 package org.springframework.schemaregistry.deserializer;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import example.avro.User;
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
+import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.avro.Schema;
 import org.apache.avro.Schema.Parser;
 import org.apache.avro.generic.GenericData;
@@ -17,16 +15,19 @@ import org.apache.avro.generic.IndexedRecord;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.schemaregistry.serializer.SpecificKafkaAvroSerializer;
 import org.springframework.util.ResourceUtils;
 
-import example.avro.User;
-import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
-import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
-import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class GenericKafkaAvroDeserializerTest {
 
@@ -40,12 +41,12 @@ public class GenericKafkaAvroDeserializerTest {
 
   private final static String TOPIC = "xpto";
 
-  @Before
+  @BeforeEach
   public void setUp() {
 
     props = new HashMap<>();
-    props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
-    props.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
+    props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
+    props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
     props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
 
     final Properties defaultConfig = new Properties();
@@ -80,48 +81,54 @@ public class GenericKafkaAvroDeserializerTest {
   @Test
   public void assertSchemaValidAndAvroLocalExists() throws IOException, RestClientException {
     final IndexedRecord avroRecord = createKnowAvroRecord();
-    schemaRegistry.register(TOPIC + "-value", avroRecord.getSchema());
+    final AvroSchema avroSchema = new AvroSchema(avroRecord.getSchema());
+    schemaRegistry.register(TOPIC + "-value", avroSchema);
     final byte[] bytes = serializer.serialize(TOPIC, avroRecord);
     final Object deserialize = deserializer.deserialize(TOPIC, bytes);
 
-    assertThat(deserialize.getClass(), equalTo(User.class));
+
+    assertThat(deserialize.getClass()).isEqualTo(User.class);
   }
 
   @Test
   public void assertSchemaValidAndAvroLocalExistsAndCached() throws IOException, RestClientException {
     final IndexedRecord avroRecord = createKnowAvroRecord();
-    schemaRegistry.register(TOPIC + "-value", avroRecord.getSchema());
+    final AvroSchema avroSchema = new AvroSchema(avroRecord.getSchema());
+    schemaRegistry.register(TOPIC + "-value", avroSchema);
     final byte[] bytes = serializer.serialize(TOPIC, avroRecord);
     deserializer.deserialize(TOPIC, bytes);
     final Object deserialize = deserializer.deserialize(TOPIC, bytes);
 
-    assertThat(deserialize.getClass(), equalTo(User.class));
+    assertThat(deserialize.getClass()).isEqualTo(User.class);
   }
 
   @Test
   public void assertSchemaValidAndAvroLocalDontExists() throws IOException, RestClientException {
     final IndexedRecord avroRecord = createUnknowAvroRecord();
-    schemaRegistry.register(TOPIC + "-value", avroRecord.getSchema());
+    final AvroSchema avroSchema = new AvroSchema(avroRecord.getSchema());
+    schemaRegistry.register(TOPIC + "-value", avroSchema);
     final byte[] bytes = serializer.serialize(TOPIC, avroRecord);
     final Object deserialize = deserializer.deserialize(TOPIC, bytes);
 
-    assertThat(deserialize.getClass(), equalTo(GenericData.Record.class));
+    assertThat(deserialize.getClass()).isEqualTo(GenericData.Record.class);
   }
 
   @Test
   public void assertSchemaValidAndAvroLocalDontExistsAndCached() throws IOException, RestClientException {
     final IndexedRecord avroRecord = createUnknowAvroRecord();
-    schemaRegistry.register(TOPIC + "-value", avroRecord.getSchema());
+    final AvroSchema avroSchema = new AvroSchema(avroRecord.getSchema());
+    schemaRegistry.register(TOPIC + "-value", avroSchema);
     final byte[] bytes = serializer.serialize(TOPIC, avroRecord);
     deserializer.deserialize(TOPIC, bytes);
     final Object deserialize = deserializer.deserialize(TOPIC, bytes);
 
-    assertThat(deserialize.getClass(), equalTo(GenericData.Record.class));
+    assertThat(deserialize.getClass()).isEqualTo((GenericData.Record.class));
   }
 
-  @Test(expected = SerializationException.class)
-  public void assertSchemaInvalidAndDataInvalid() throws IOException, RestClientException {
-    deserializer.deserialize(TOPIC, new byte[] { 0x10 });
+  @Test
+  public void assertSchemaInvalidAndDataInvalid()  {
+    assertThatThrownBy(() -> deserializer.deserialize(TOPIC, new byte[] { 0x10 }))
+        .isInstanceOf(SerializationException.class);
   }
 
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
@@ -36,7 +37,7 @@ public class GenericKafkaAvroDeserializer extends SpecificKafkaAvroDeserializer 
 
   @Override
   @SneakyThrows
-  protected Object deserialize(final boolean includeSchemaAndVersion, final String topic, final Boolean isKey, final byte[] payload, final Schema readerSchema) throws SerializationException {
+  protected Object deserialize(final String topic, final Boolean isKey, final byte[] payload, final Schema readerSchema) throws SerializationException {
 
     final ByteBuffer buffer = ByteBuffer.wrap(payload);
 
@@ -44,16 +45,16 @@ public class GenericKafkaAvroDeserializer extends SpecificKafkaAvroDeserializer 
       throw new SerializationException("Unknown magic byte!");
     }
 
-    final Schema schema = schemaRegistry.getById(buffer.getInt());
+    final AvroSchema schema = (AvroSchema)schemaRegistry.getSchemaById(buffer.getInt());
 
-    final String fullName = schema.getFullName();
+    final String fullName = schema.name();
 
     if (constraintClass(fullName)) {
-      return super.deserialize(includeSchemaAndVersion, topic, isKey, payload, readerSchema);
+      return super.deserialize(topic, isKey, payload, readerSchema);
     } else {
       final int length = buffer.limit() - 1 - idSize;
       final int start = buffer.position() + buffer.arrayOffset();
-      final DatumReader<GenericRecord> datumReader = new GenericDatumReader<>(schema);
+      final DatumReader<GenericRecord> datumReader = new GenericDatumReader<>(schema.rawSchema());
       return datumReader.read(null, decoderFactory.binaryDecoder(buffer.array(), start, length, null));
     }
 

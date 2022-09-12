@@ -1,16 +1,14 @@
 package org.springframework.schemaregistry.serializer;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.io.IOException;
 
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.internals.RecordHeaders;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.schemaregistry.deserializer.AvroDeserializer;
 
 import example.avro.User;
@@ -26,7 +24,7 @@ public class AvroSerializerTest {
     final RecordHeaders headers = new RecordHeaders();
     final byte[] bs = avroSerializer.serialize("bogus", headers, createAvroRecord());
     final SpecificRecord specificRecord = avroDeserializer.deserialize("bogus", headers, bs);
-    assertThat(specificRecord, instanceOf(User.class));
+    assertThat(specificRecord).isInstanceOf(User.class);
   }
 
   @Test
@@ -34,19 +32,19 @@ public class AvroSerializerTest {
     final RecordHeaders headers = new RecordHeaders();
     final byte[] bs = avroSerializer.serialize("bogus", headers, null);
     final SpecificRecord specificRecord = avroDeserializer.deserialize("bogus", headers, bs);
-    assertThat(specificRecord, nullValue());
+    assertThat(specificRecord).isNull();
   }
 
   @Test
   public void testSuccessSerializerRiseSerializationException() throws IOException {
-    final Throwable throwable = catchThrowable(() -> avroSerializer.serialize("bogus", null, createAvroRecord()));
-    assertThat(throwable, instanceOf(SerializationException.class));
+    assertThatThrownBy(() ->  avroSerializer.serialize("bogus", null, createAvroRecord()))
+        .isInstanceOf(SerializationException.class);
   }
 
   @Test
   public void testSuccessSerializerRiseUnsupportedOperationException() throws IOException {
-    final Throwable throwable = catchThrowable(() -> avroSerializer.serialize("bogus", createAvroRecord()));
-    assertThat(throwable, instanceOf(UnsupportedOperationException.class));
+    assertThatThrownBy(() ->  avroSerializer.serialize("bogus", createAvroRecord()))
+            .isInstanceOf(UnsupportedOperationException.class);
   }
 
   private SpecificRecord createAvroRecord() throws IOException {
