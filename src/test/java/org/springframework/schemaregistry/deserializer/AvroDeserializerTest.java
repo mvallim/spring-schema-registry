@@ -1,19 +1,16 @@
 package org.springframework.schemaregistry.deserializer;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-
-import java.io.IOException;
-
+import example.avro.User;
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.internals.RecordHeaders;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.schemaregistry.serializer.AvroSerializer;
 
-import example.avro.User;
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class AvroDeserializerTest {
 
@@ -26,7 +23,7 @@ public class AvroDeserializerTest {
     final RecordHeaders headers = new RecordHeaders();
     final byte[] bs = avroSerializer.serialize("bogus", headers, createAvroRecord());
     final SpecificRecord specificRecord = avroDeserializer.deserialize("bogus", headers, bs);
-    assertThat(specificRecord, instanceOf(User.class));
+    assertThat(specificRecord).isInstanceOf(User.class);
   }
 
   @Test
@@ -34,19 +31,20 @@ public class AvroDeserializerTest {
     final RecordHeaders headers = new RecordHeaders();
     final byte[] bs = avroSerializer.serialize("bogus", headers, null);
     final SpecificRecord specificRecord = avroDeserializer.deserialize("bogus", headers, bs);
-    assertThat(specificRecord, nullValue());
+    assertThat(specificRecord).isNull();
   }
 
   @Test
   public void testSuccessDeserializerRiseSerializationException() throws IOException {
-    final Throwable throwable = catchThrowable(() -> avroDeserializer.deserialize("bogus", null, new byte[] { 0 }));
-    assertThat(throwable, instanceOf(SerializationException.class));
+    assertThatThrownBy(() -> avroDeserializer.deserialize("bogus", null, new byte[] { 0 }))
+                       .isInstanceOf(SerializationException.class);
+
   }
 
   @Test
   public void testSuccessDeserializerRiseUnsupportedOperationException() throws IOException {
-    final Throwable throwable = catchThrowable(() -> avroDeserializer.deserialize("bogus", new byte[] { 0 }));
-    assertThat(throwable, instanceOf(UnsupportedOperationException.class));
+    assertThatThrownBy(() ->  avroDeserializer.deserialize("bogus", new byte[] { 0 }))
+        .isInstanceOf(UnsupportedOperationException.class);
   }
 
   private SpecificRecord createAvroRecord() throws IOException {

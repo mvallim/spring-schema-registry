@@ -5,13 +5,13 @@ import java.util.Objects;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.springframework.schemaregistry.core.SchemaRegistrySSLSocketFactory;
 
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.RestService;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 
@@ -34,7 +34,7 @@ public class SpecificKafkaAvroDeserializer extends KafkaAvroDeserializer impleme
 
     if (Objects.isNull(schemaRegistry)) {
 
-      final AbstractKafkaAvroSerDeConfig deserializerConfig = new KafkaAvroDeserializerConfig(configs);
+      final AbstractKafkaSchemaSerDeConfig deserializerConfig = new KafkaAvroDeserializerConfig(configs);
 
       final RestService restService = new RestService(deserializerConfig.getSchemaRegistryUrls());
 
