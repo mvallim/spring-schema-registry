@@ -8,6 +8,12 @@
 
 The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL
 
+## Notice
+
+  * Compatible with **JDK 8, 11, 15, 16 and 17**
+  * Compatible with **schema-registry version 5.3.1 or later**
+  * Compatible with **avro version 1.9.1 or later**
+  
 ## Problem description
 
 1. **When**
@@ -41,12 +47,6 @@ The failure happens in a scenario where we would expect it to be fully functiona
 The problem happens because the `kafka-avro-serializer` component uses the JVM variables `javax.net.ssl.trustStore`, `javax.net.ssl.keyStore`, `javax.net.ssl.trustStorePassword` and `javax.net.ssl.keyStorePassword`, and these variables apply to the whole application. As a consequence, if we use a certificate to publish the application API, it will be used by the `kafka-avro-serializer` component.
 
 It is intended that the application uses a certificate to expose its API and use a second certificate to communicate with the **Schema Registry**.
-
-## Notice
-
-  * Compatible with **JDK 8, 11, 15, 16 and 17**
-  * Compatible with **schema-registry version 5.3.1 or later**
-  * Compatible with **avro version 1.9.1 or later**
 
 ## 1. Quick Start
 
