@@ -16,7 +16,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<schema.registry.version>5.3.1</schema.registry.version>
 		<commons.lang.version>3.12.0</commons.lang.version>
-		<spring.boot.version>2.2.13.RELEASE</spring.boot.version>
+		<spring.boot.version>3.0.4</spring.boot.version>
 		<avro.version>1.9.1</avro.version>
 		<lombok.version>1.18.20</lombok.version>
 		<commons-cli>1.4</commons-cli>
