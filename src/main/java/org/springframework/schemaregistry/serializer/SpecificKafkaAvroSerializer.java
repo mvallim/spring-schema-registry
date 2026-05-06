@@ -31,20 +31,45 @@ import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
+/**
+ * Kafka Avro serializer for specific records that integrates with Confluent Schema Registry.
+ * This serializer configures SSL support and creates a cached schema registry client if not already present.
+ */
 public class SpecificKafkaAvroSerializer extends KafkaAvroSerializer implements Serializer<Object> {
 
+  /**
+   * Constructs a new SpecificKafkaAvroSerializer with default configuration.
+   */
   public SpecificKafkaAvroSerializer() {
     super();
   }
 
+  /**
+   * Constructs a new SpecificKafkaAvroSerializer with the specified schema registry client.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema registration
+   */
   public SpecificKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient) {
     super(schemaRegistryClient);
   }
 
+  /**
+   * Constructs a new SpecificKafkaAvroSerializer with the specified schema registry client and configuration.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema registration
+   * @param configs additional configuration properties
+   */
   public SpecificKafkaAvroSerializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
     super(schemaRegistryClient, configs);
   }
 
+  /**
+   * Configures the serializer with the given properties.
+   * Initializes the schema registry client with SSL support if not already configured.
+   *
+   * @param configs the configuration properties
+   * @param isKey indicates if configuring for key or value serialization
+   */
   @Override
   public void configure(final Map<String, ?> configs, final boolean isKey) {
 

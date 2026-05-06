@@ -25,15 +25,15 @@ import java.security.NoSuchAlgorithmException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SchemaRegistrySSLSocketFactoryTest {
+class SchemaRegistrySSLSocketFactoryTest {
 
   private final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
 
-  @Before
-  public void SetUp() throws NoSuchAlgorithmException {
+  @BeforeEach
+  void SetUp() throws NoSuchAlgorithmException {
     properties.setProtocol("SSL");
     properties.setKeyPassword("changeit");
     properties.setKeyStoreLocation("classpath:keystore-test.jks");
@@ -48,7 +48,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenMinimalValidConfigurationGetSslSocketFactorySuccess() {
+  void whenMinimalValidConfigurationGetSslSocketFactorySuccess() {
 
     final SSLSocketFactory sslSocketFactory = SchemaRegistrySSLSocketFactory.createSslSocketFactory(properties);
 
@@ -56,7 +56,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidSSLConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidSSLConfigurationGetSslSocketFactoryFail() {
 
     properties.setProtocol(null);
 
@@ -66,7 +66,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidProviderConfigurationGetSslSocketFactorySuccess() {
+  void whenInvalidProviderConfigurationGetSslSocketFactorySuccess() {
 
     properties.setProvider(null);
 
@@ -76,7 +76,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyPassworConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidKeyPassworConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyPassword("xpto");
 
@@ -86,7 +86,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyPassworIsNullConfigurationGetSslSocketFactorySuccess() {
+  void whenInvalidKeyPassworIsNullConfigurationGetSslSocketFactorySuccess() {
 
     properties.setKeyPassword(null);
 
@@ -96,7 +96,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidProtocolConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidProtocolConfigurationGetSslSocketFactoryFail() {
 
     properties.setProtocol("XPTO");
 
@@ -106,7 +106,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyStoreLocation("tmp/keystore-test.jks");
 
@@ -116,7 +116,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyStorePassword("xpto");
 
@@ -126,7 +126,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyStoreType("TXT");
 
@@ -136,7 +136,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyManagerAlgorithm("XPTO");
 
@@ -146,7 +146,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
+  void whenNullKeyStoreLocationConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyStoreLocation(null);
 
@@ -156,7 +156,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullKeyStorePasswordConfigurationGetSslSocketFactorySuccess() {
+  void whenNullKeyStorePasswordConfigurationGetSslSocketFactorySuccess() {
 
     properties.setKeyStorePassword(null);
 
@@ -166,7 +166,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullKeyPasswordAndKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
+  void whenNullKeyPasswordAndKeyStorePasswordConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyPassword(null);
     properties.setKeyStorePassword(null);
@@ -177,7 +177,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
+  void whenNullKeyStoreTypeConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyStoreType(null);
 
@@ -187,7 +187,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  void whenNullKeyManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
     properties.setKeyManagerAlgorithm(null);
 
@@ -197,7 +197,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustStoreLocation("tmp/keystore-test.jks");
 
@@ -207,7 +207,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidTrustStorePasswordConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidTrustStorePasswordConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustStorePassword("xpto");
 
@@ -217,7 +217,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustStoreType("TXT");
 
@@ -227,7 +227,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenInvalidTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  void whenInvalidTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustManagerAlgorithm("XPTO");
 
@@ -237,7 +237,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
+  void whenNullTrustStoreLocationConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustStoreLocation(null);
 
@@ -247,7 +247,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullTrustStorePasswordConfigurationGetSslSocketFactorySuccess() {
+  void whenNullTrustStorePasswordConfigurationGetSslSocketFactorySuccess() {
 
     properties.setTrustStorePassword(null);
 
@@ -257,7 +257,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
+  void whenNullTrustStoreTypeConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustStoreType(null);
 
@@ -267,7 +267,7 @@ public class SchemaRegistrySSLSocketFactoryTest {
   }
 
   @Test
-  public void whenNullTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
+  void whenNullTrustManagerAlgorithmConfigurationGetSslSocketFactoryFail() {
 
     properties.setTrustManagerAlgorithm(null);
 

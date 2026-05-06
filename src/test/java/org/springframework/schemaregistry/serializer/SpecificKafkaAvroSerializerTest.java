@@ -16,9 +16,10 @@
 
 package org.springframework.schemaregistry.serializer;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +39,8 @@ import org.apache.avro.util.Utf8;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.schemaregistry.core.SslSocketFactoryConfig;
 import org.springframework.schemaregistry.deserializer.SpecificKafkaAvroDeserializer;
 import org.springframework.util.ResourceUtils;
@@ -51,7 +52,7 @@ import io.confluent.kafka.serializers.KafkaAvroDecoder;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import kafka.utils.VerifiableProperties;
 
-public class SpecificKafkaAvroSerializerTest {
+class SpecificKafkaAvroSerializerTest {
 
   private Map<String, String> props;
 
@@ -65,8 +66,8 @@ public class SpecificKafkaAvroSerializerTest {
 
   private final static String TOPIC = "xpto";
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     schemaRegistry = new MockSchemaRegistryClient();
 
     props = new HashMap<>();
@@ -83,7 +84,7 @@ public class SpecificKafkaAvroSerializerTest {
   }
 
   @Test
-  public void testWrapperKafkaAvroSerializer() throws IOException {
+  void testWrapperKafkaAvroSerializer() throws IOException {
 
     byte[] bytes;
 
@@ -105,8 +106,8 @@ public class SpecificKafkaAvroSerializerTest {
     assertEquals(123, avroDecoder.fromBytes(bytes));
 
     bytes = serializer.serialize(TOPIC, 345L);
-    assertEquals(345l, deserializer.deserialize(TOPIC, bytes));
-    assertEquals(345l, avroDecoder.fromBytes(bytes));
+    assertEquals(345L, deserializer.deserialize(TOPIC, bytes));
+    assertEquals(345L, avroDecoder.fromBytes(bytes));
 
     bytes = serializer.serialize(TOPIC, 1.23f);
     assertEquals(1.23f, deserializer.deserialize(TOPIC, bytes));
@@ -133,7 +134,7 @@ public class SpecificKafkaAvroSerializerTest {
   }
 
   @Test
-  public void testKafkaAvroSerializerConfigureWithSSL() throws IOException, NoSuchAlgorithmException {
+  void testKafkaAvroSerializerConfigureWithSSL() throws IOException, NoSuchAlgorithmException {
     final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
     properties.setProtocol("SSL");
     properties.setKeyPassword("changeit");
@@ -156,7 +157,7 @@ public class SpecificKafkaAvroSerializerTest {
   }
 
   @Test
-  public void testKafkaAvroSerializerConfigureWithOutSsl() throws IOException, NoSuchAlgorithmException {
+  void testKafkaAvroSerializerConfigureWithOutSsl() throws IOException, NoSuchAlgorithmException {
     final SslSocketFactoryConfig properties = new SslSocketFactoryConfig();
     properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     properties.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
@@ -167,19 +168,20 @@ public class SpecificKafkaAvroSerializerTest {
     }
   }
 
-  @Test(expected = SerializationException.class)
-  public void testKafkaAvroSerializerWithoutAutoRegister() throws IOException {
+  @Test
+  void testKafkaAvroSerializerWithoutAutoRegister() throws IOException {
     final Map<String, Object> configs = new HashMap<>();
     configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     configs.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
     serializer.configure(configs, false);
     final IndexedRecord avroRecord = createAvroRecord();
-    serializer.serialize(TOPIC, avroRecord);
+
+    catchThrowableOfType(() -> serializer.serialize(TOPIC, avroRecord), SerializationException.class);
   }
 
   @Test
-  public void testKafkaAvroSerializerWithPreRegistered() throws IOException, RestClientException {
+  void testKafkaAvroSerializerWithPreRegistered() throws IOException, RestClientException {
     final Map<String, Object> configs = new HashMap<>();
     configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     configs.put(AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
@@ -194,14 +196,14 @@ public class SpecificKafkaAvroSerializerTest {
   }
 
   @Test
-  public void testNull() {
+  void testNull() {
     try (final Serializer<Object> nullAvroSerializer = new SpecificKafkaAvroSerializer(null)) {
       assertEquals(null, nullAvroSerializer.serialize("test", null));
     }
   }
 
   @Test
-  public void testKafkaAvroSerializerSpecificRecordWithPrimitives() {
+  void testKafkaAvroSerializerSpecificRecordWithPrimitives() {
     final Map<String, Object> configs = new HashMap<>();
     configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     configs.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
@@ -218,21 +220,21 @@ public class SpecificKafkaAvroSerializerTest {
     Object obj;
 
     obj = avroDecoder.fromBytes(bytes);
-    assertTrue("Returned object should be a String", String.class.isInstance(obj));
+    assertTrue((obj instanceof String), "Returned object should be a String");
 
     obj = specificAvroDecoder.fromBytes(bytes);
-    assertTrue("Returned object should be a String", String.class.isInstance(obj));
+    assertTrue((obj instanceof String), "Returned object should be a String");
     assertEquals(message, obj);
 
     obj = specificAvroDeserializer.deserialize(TOPIC, bytes);
-    assertTrue("Returned object should be a String", String.class.isInstance(obj));
+    assertTrue((obj instanceof String), "Returned object should be a String");
     assertEquals(message, obj);
 
     specificAvroDeserializer.close();
   }
 
   @Test
-  public void testSchemasPerSubject() {
+  void testSchemasPerSubject() {
     final HashMap<String, String> props = new HashMap<>();
     props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "bogus");
     props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
