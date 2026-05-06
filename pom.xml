@@ -5,7 +5,7 @@
 
 	<groupId>com.github.mvallim</groupId>
 	<artifactId>spring-schema-registry</artifactId>
-	<version>2.1.1-SNAPSHOT</version>
+	<version>2.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>spring-schema-registry</name>
@@ -48,7 +48,7 @@
 		<url>scm:git:https://github.com/mvallim/spring-schema-registry.git</url>
 		<connection>scm:git:https://github.com/mvallim/spring-schema-registry.git</connection>
 		<developerConnection>scm:git:https://github.com/mvallim/spring-schema-registry.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v2.1.1</tag>
 	</scm>
 
 	<description>The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL</description>
