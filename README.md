@@ -1,18 +1,18 @@
 # Spring Schema Registry
-![Java CI with Maven](https://github.com/mvallim/spring-schema-registry/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
-![CodeQL](https://github.com/mvallim/spring-schema-registry/workflows/CodeQL/badge.svg?branch=master)
+
+[![Build, Publish Snapshot and Pull Request](https://github.com/mvallim/spring-schema-registry/actions/workflows/cd-snapshot.yml/badge.svg)](https://github.com/mvallim/spring-schema-registry/actions/workflows/cd-snapshot.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=alert_status)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=spring-schema-registry&metric=coverage)](https://sonarcloud.io/dashboard?id=spring-schema-registry)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/spring-schema-registry)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.mvallim/spring-schema-registry)](https://img.shields.io/maven-central/v/com.github.mvallim/spring-schema-registry)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 The purpose of this module is to solve the problem of multiple keystores using Spring Boot + Kafka + Schema Registry + SSL
 
 ## Notice
 
-  * Compatible with **JDK 8, 11, 15, 16 and 17**
-  * Compatible with **schema-registry version 5.3.1 or later**
-  * Compatible with **avro version 1.9.1 or later**
+* Compatible with **JDK 8, 11, 17 and 21**
+* Compatible with **schema-registry version 5.3.1 or greater**
+* Compatible with **avro version 1.9.1 or greater**
   
 ## Problem description
 
@@ -118,7 +118,7 @@ You can pull it from the central Maven repositories:
 <dependency>
   <groupId>com.github.mvallim</groupId>
   <artifactId>spring-schema-registry</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
@@ -138,7 +138,7 @@ If you want to try a snapshot version, add the following repository:
 #### Gradle
 
 ```groovy
-implementation 'com.github.mvallim:spring-schema-registry:2.1.0'
+implementation 'com.github.mvallim:spring-schema-registry:2.1.1'
 ```
 
 If you want to try a snapshot version, add the following repository:

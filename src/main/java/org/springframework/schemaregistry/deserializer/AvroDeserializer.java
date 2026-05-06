@@ -31,13 +31,34 @@ import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
 
+/**
+ * Kafka deserializer for Avro-specific records that reads schema information from message headers.
+ * This deserializer expects the schema to be present in the message headers under the "schema" key.
+ */
 public class AvroDeserializer implements Deserializer<SpecificRecord> {
 
+  /**
+   * Deserializes Avro data without headers. This method is not supported.
+   *
+   * @param topic the topic from which the data was received
+   * @param data the serialized Avro data
+   * @return never returns as this method throws UnsupportedOperationException
+   * @throws UnsupportedOperationException always thrown as headers are required
+   */
   @Override
   public SpecificRecord deserialize(final String topic, final byte[] data) {
     throw new UnsupportedOperationException("Empty header");
   }
 
+  /**
+   * Deserializes Avro data using the schema provided in the message headers.
+   *
+   * @param topic the topic from which the data was received
+   * @param headers the Kafka headers containing the schema information
+   * @param data the serialized Avro data
+   * @return the deserialized SpecificRecord, or null if data is empty
+   * @throws SerializationException if deserialization fails
+   */
   @Override
   public SpecificRecord deserialize(final String topic, final Headers headers, final byte[] data) {
     if (ArrayUtils.isNotEmpty(data)) {

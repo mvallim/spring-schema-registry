@@ -29,13 +29,34 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Serializer;
 
+/**
+ * Kafka serializer for Avro-specific records that includes schema information in message headers.
+ * This serializer writes the Avro schema to the message headers under the "schema" key.
+ */
 public class AvroSerializer implements Serializer<SpecificRecord> {
 
+  /**
+   * Serializes Avro data without headers. This method is not supported.
+   *
+   * @param topic the topic to which the data will be sent
+   * @param data the SpecificRecord to serialize
+   * @return never returns as this method throws UnsupportedOperationException
+   * @throws UnsupportedOperationException always thrown as headers are required
+   */
   @Override
   public byte[] serialize(final String topic, final SpecificRecord data) {
     throw new UnsupportedOperationException("Empty header");
   }
 
+  /**
+   * Serializes Avro data and adds the schema to the message headers.
+   *
+   * @param topic the topic to which the data will be sent
+   * @param headers the Kafka headers where the schema will be added
+   * @param data the SpecificRecord to serialize
+   * @return the serialized byte array, or empty array if data is null
+   * @throws SerializationException if serialization fails
+   */
   @Override
   public byte[] serialize(final String topic, final Headers headers, final SpecificRecord data) {
     if (Objects.nonNull(data)) {

@@ -16,8 +16,17 @@
 
 package org.springframework.schemaregistry.core;
 
+/**
+ * Interface for creating SSL socket factories.
+ * Implementations provide SSL/TLS socket factory instances configured with specific security settings.
+ */
 public interface SSLSocketFactory {
 
+	/**
+	 * Creates a new SSL socket factory with the configured security settings.
+	 *
+	 * @return a configured SSLSocketFactory instance, or null if creation fails
+	 */
 	public javax.net.ssl.SSLSocketFactory createSslSocketFactory();
 
 }

@@ -31,20 +31,45 @@ import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 
+/**
+ * Kafka Avro deserializer for specific records that integrates with Confluent Schema Registry.
+ * This deserializer configures SSL support and creates a cached schema registry client if not already present.
+ */
 public class SpecificKafkaAvroDeserializer extends KafkaAvroDeserializer implements Deserializer<Object> {
 
+  /**
+   * Constructs a new SpecificKafkaAvroDeserializer with default configuration.
+   */
   public SpecificKafkaAvroDeserializer() {
     super();
   }
 
+  /**
+   * Constructs a new SpecificKafkaAvroDeserializer with the specified schema registry client.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema lookups
+   */
   public SpecificKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient) {
     super(schemaRegistryClient);
   }
 
+  /**
+   * Constructs a new SpecificKafkaAvroDeserializer with the specified schema registry client and configuration.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema lookups
+   * @param configs additional configuration properties
+   */
   public SpecificKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
     super(schemaRegistryClient, configs);
   }
 
+  /**
+   * Configures the deserializer with the given properties.
+   * Initializes the schema registry client with SSL support if not already configured.
+   *
+   * @param configs the configuration properties
+   * @param isKey indicates if configuring for key or value deserialization
+   */
   @Override
   public void configure(final Map<String, ?> configs, final boolean isKey) {
 

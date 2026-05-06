@@ -30,6 +30,11 @@ import org.apache.kafka.common.errors.SerializationException;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import lombok.SneakyThrows;
 
+/**
+ * Avro deserializer that handles both specific and generic Avro records.
+ * This deserializer attempts to deserialize data as a specific record if the schema class
+ * is available in the classpath; otherwise, it falls back to generic record deserialization.
+ */
 public class GenericKafkaAvroDeserializer extends SpecificKafkaAvroDeserializer {
 
   private final ClassLoader classLoader = SpecificKafkaAvroDeserializer.class.getClassLoader();
@@ -38,18 +43,43 @@ public class GenericKafkaAvroDeserializer extends SpecificKafkaAvroDeserializer 
 
   private final Map<String, Boolean> discoveredClasses = new ConcurrentHashMap<>();
 
+  /**
+   * Constructs a new GenericKafkaAvroDeserializer with default configuration.
+   */
   public GenericKafkaAvroDeserializer() {
     super();
   }
 
+  /**
+   * Constructs a new GenericKafkaAvroDeserializer with the specified schema registry client.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema lookups
+   */
   public GenericKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient) {
     super(schemaRegistryClient);
   }
 
+  /**
+   * Constructs a new GenericKafkaAvroDeserializer with the specified schema registry client and configuration.
+   *
+   * @param schemaRegistryClient the schema registry client to use for schema lookups
+   * @param configs additional configuration properties
+   */
   public GenericKafkaAvroDeserializer(final SchemaRegistryClient schemaRegistryClient, final Map<String, ?> configs) {
     super(schemaRegistryClient, configs);
   }
 
+  /**
+   * Deserializes the given Avro payload, determining whether to use specific or generic record deserialization.
+   *
+   * @param includeSchemaAndVersion if true, includes schema and version information
+   * @param topic the topic from which the data was received
+   * @param isKey indicates if the data is a key or value
+   * @param payload the serialized Avro data
+   * @param readerSchema the reader schema to use for deserialization (may be null)
+   * @return the deserialized object as either a specific record or generic record
+   * @throws SerializationException if deserialization fails or the data format is invalid
+   */
   @Override
   @SneakyThrows
   protected Object deserialize(final boolean includeSchemaAndVersion, final String topic, final Boolean isKey, final byte[] payload, final Schema readerSchema) throws SerializationException {
@@ -75,6 +105,13 @@ public class GenericKafkaAvroDeserializer extends SpecificKafkaAvroDeserializer 
 
   }
 
+  /**
+   * Checks if the given schema full name corresponds to a class available in the classpath.
+   * Results are cached to avoid repeated class lookups.
+   *
+   * @param fullName the fully qualified class name of the schema
+   * @return true if the class is available in the classpath, false otherwise
+   */
   private boolean constraintClass(final String fullName) {
     if (discoveredClasses.containsKey(fullName)) {
       return discoveredClasses.get(fullName);
